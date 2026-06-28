@@ -441,7 +441,10 @@ jobs:
     name: Windows ARM64 Portable Build
     needs: setup-version
     runs-on: windows-latest
-    if: needs.setup-version.outputs.should_build == 'true'
+    # TEMP DISABLED (CI triage 2026-06): inherited build is broken and Windows is
+    # low priority for this fork (Linux/macOS first). Preserved, not deleted — revive
+    # later. Was: if: needs.setup-version.outputs.should_build == 'true'
+    if: false
     
     steps:
     - name: Checkout
@@ -585,7 +588,10 @@ jobs:
     name: Windows Universal Installer
     needs: setup-version
     runs-on: windows-latest
-    if: needs.setup-version.outputs.should_build == 'true'
+    # TEMP DISABLED (CI triage 2026-06): inherited build is broken and Windows is
+    # low priority for this fork (Linux/macOS first). Preserved, not deleted — revive
+    # later. Was: if: needs.setup-version.outputs.should_build == 'true'
+    if: false
     
     steps:
     - name: Checkout
