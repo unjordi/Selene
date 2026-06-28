@@ -16,6 +16,13 @@ CONFIG(release, debug|release) {
 macx {
     QMAKE_CFLAGS   += -Wno-error=implicit-function-declaration
     QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
+
+    # Apple removed the legacy AGL framework from recent SDKs (Xcode 16+/macOS 15+),
+    # but Qt's opengl mkspec still tries to link `-framework AGL` -> "ld: framework
+    # 'AGL' not found". We use Metal/QuartzCore, not AGL, so strip it from the
+    # OpenGL link flags. Remove once Qt's mkspec stops referencing AGL.
+    QMAKE_LIBS_OPENGL    -= -framework AGL
+    QMAKE_LIBS_OPENGL_QT -= -framework AGL
 }
 
 # Enable ASan for Linux or macOS
