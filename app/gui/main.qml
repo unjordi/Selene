@@ -298,7 +298,7 @@ ApplicationWindow {
 
             NavigableToolButton {
                 id: discordButton
-                visible: false // Temporarily disabled for Artemis
+                visible: false // Temporarily disabled for Selene
 
                 iconSource: "qrc:/res/discord.svg"
 
@@ -364,7 +364,7 @@ ApplicationWindow {
 
                 function updateAvailable(version, url)
                 {
-                    ToolTip.text = qsTr("Update available for Artemis: Version %1").arg(version)
+                    ToolTip.text = qsTr("Update available for Selene: Version %1").arg(version)
                     updateButton.browserUrl = url
                     updateButton.visible = true
                 }
@@ -449,7 +449,7 @@ ApplicationWindow {
 
     ErrorMessageDialog {
         id: noHwDecoderDialog
-        text: qsTr("No functioning hardware accelerated video decoder was detected by Artemis. " +
+        text: qsTr("No functioning hardware accelerated video decoder was detected by Selene. " +
                    "Your streaming performance may be severely degraded in this configuration.")
         helpText: qsTr("Click the Help button for more information on solving this problem.")
         helpUrl: "https://github.com/wjbeckett/artemis/wiki/Fixing-Hardware-Decoding-Problems"
@@ -466,7 +466,7 @@ ApplicationWindow {
     NavigableMessageDialog {
         id: wow64Dialog
         standardButtons: Dialog.Ok | Dialog.Cancel
-        text: qsTr("This version of Artemis isn't optimized for your PC. Please download the '%1' version of Artemis for the best streaming performance.").arg(SystemProperties.friendlyNativeArchName)
+        text: qsTr("This version of Selene isn't optimized for your PC. Please download the '%1' version of Selene for the best streaming performance.").arg(SystemProperties.friendlyNativeArchName)
         onAccepted: {
             Qt.openUrlExternally("https://github.com/wjbeckett/artemis/releases");
         }
@@ -475,7 +475,7 @@ ApplicationWindow {
     ErrorMessageDialog {
         id: unmappedGamepadDialog
         property string unmappedGamepads : ""
-        text: qsTr("Artemis detected gamepads without a mapping:") + "\n" + unmappedGamepads
+        text: qsTr("Selene detected gamepads without a mapping:") + "\n" + unmappedGamepads
         helpTextSeparator: "\n\n"
         helpText: qsTr("Click the Help button for information on how to map your gamepads.")
         helpUrl: "https://github.com/wjbeckett/artemis/wiki/Gamepad-Mapping"

@@ -980,7 +980,7 @@ qDebug() << "PendingOTPPairingTask: Generated AES key from salt+PIN";
             // Build the pairing parameters - use consistent device name
             QString deviceName = QSysInfo::machineHostName();
             if (deviceName.isEmpty()) {
-                deviceName = "Artemis";
+                deviceName = "Selene";
             }
             QString pairingParams = QString("devicename=%1&updateState=1&phrase=getservercert&salt=%2&clientcert=%3&otpauth=%4")
                 .arg(deviceName)

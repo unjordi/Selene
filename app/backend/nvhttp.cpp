@@ -134,7 +134,7 @@ NvHTTP::getServerInfo(NvLogLevel logLevel, bool fastFail)
     // Add devicename parameter to match Android client behavior
     QString deviceName = QSysInfo::machineHostName();
     if (deviceName.isEmpty()) {
-        deviceName = "Artemis";
+        deviceName = "Selene";
     }
     QString deviceNameParam = "devicename=" + deviceName;
 
@@ -563,7 +563,7 @@ NvHTTP::openConnection(QUrl baseUrl,
     static QString machineUniqueId;
     if (machineUniqueId.isEmpty()) {
         QString hostname = QSysInfo::machineHostName();
-        if (hostname.isEmpty()) hostname = "artemis";
+        if (hostname.isEmpty()) hostname = "selene";
         // Take first 8 chars of hostname and pad with random hex
         QString hostPart = hostname.left(8).toUpper();
         while (hostPart.length() < 8) {

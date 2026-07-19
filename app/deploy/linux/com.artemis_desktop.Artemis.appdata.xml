@@ -3,7 +3,7 @@
 	<id>com.artemis_desktop.Artemis</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0+</project_license>
-	<name>Artemis</name>
+	<name>Selene</name>
 	<summary>Stream games and other applications from another PC running Sunshine or GeForce Experience</summary>
 
 	<description>
