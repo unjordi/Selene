@@ -197,6 +197,10 @@ jobs:
           target: 'desktop'
           modules: 'qtmultimedia'
 
+      - name: Strip removed AGL framework from Qt (macOS)
+        if: matrix.os == 'macos-latest'
+        run: bash scripts/macos-strip-agl.sh "$Qt6_DIR"
+
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-22.04'
         run: |
@@ -815,7 +819,10 @@ jobs:
       run: |
         echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
         echo "Qt6_DIR=$Qt6_DIR" >> $GITHUB_ENV
-    
+
+    - name: Strip removed AGL framework from Qt (macOS)
+      run: bash scripts/macos-strip-agl.sh "$Qt6_DIR"
+
     - name: Install dependencies
       run: |
         brew install create-dmg ffmpeg opus sdl2 sdl2_ttf

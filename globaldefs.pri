@@ -17,12 +17,15 @@ macx {
     QMAKE_CFLAGS   += -Wno-error=implicit-function-declaration
     QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
 
-    # Apple removed the legacy AGL framework from recent SDKs (Xcode 16+/macOS 15+),
-    # but Qt's opengl mkspec still tries to link `-framework AGL` -> "ld: framework
-    # 'AGL' not found". We use Metal/QuartzCore, not AGL, so strip it from the
-    # OpenGL link flags. Remove once Qt's mkspec stops referencing AGL.
-    QMAKE_LIBS_OPENGL    -= -framework AGL
-    QMAKE_LIBS_OPENGL_QT -= -framework AGL
+    # NOTE on AGL: Apple removed the legacy AGL framework from recent SDKs
+    # (Xcode 16+/macOS 15+), but Qt 6.8.3 still references `-framework AGL`. It is
+    # NOT reachable from here: it comes in through Qt's per-framework .prl files
+    # (QtGui and friends, incl. the copies inside each *.framework/Resources), which
+    # qmake expands at link time -> "ld: framework 'AGL' not found". A
+    # `QMAKE_LIBS_OPENGL -= -framework AGL` in this scope does nothing about that.
+    # The fix is to strip AGL from the Qt *installation* before building: CI does it
+    # in .github/workflows/dev-build.yml; for a local macOS build run
+    # scripts/macos-strip-agl.sh against your Qt dir. Remove once Qt stops shipping AGL.
 }
 
 # Enable ASan for Linux or macOS
