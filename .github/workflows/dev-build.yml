@@ -935,12 +935,12 @@ jobs:
           
           if [ -d "build/build-Release" ]; then
             # Use create-dmg directly with correct argument order
-            echo "Found Artemis.app at app/Artemis.app"
+            echo "Found Selene.app at app/Selene.app"
             mkdir -p build/installer-Release
             # Simple approach using hdiutil which is more reliable
-            if [ -d "app/Artemis.app" ]; then
+            if [ -d "app/Selene.app" ]; then
               echo "Creating DMG with hdiutil..."
-              hdiutil create -srcfolder app/Artemis.app -volname "Artemis" "build/installer-Release/Artemis-${VERSION}.dmg" || {
+              hdiutil create -srcfolder app/Selene.app -volname "Artemis" "build/installer-Release/Artemis-${VERSION}.dmg" || {
                 echo "hdiutil failed, trying create-dmg with minimal options..."
                 create-dmg \
                   --volname "Artemis" \
@@ -950,37 +950,37 @@ jobs:
                   "app/" || exit 1
               }
             else
-              echo "Error: No Artemis.app found in app/ directory"
+              echo "Error: No Selene.app found in app/ directory"
               exit 1
             fi
             cd build/build-Release
             # Look for the app bundle in the most likely locations
-            if [ -d "app/Artemis.app" ]; then
-              echo "Found Artemis.app at app/Artemis.app"
+            if [ -d "app/Selene.app" ]; then
+              echo "Found Selene.app at app/Selene.app"
               # Create a simple DMG manually with proper filename
               mkdir -p ../installer-Release
               create-dmg --volname "Artemis-$VERSION" \
                 --icon-size 80 \
-                --icon "app/Artemis.app" 200 190 \
-                --hide-extension "app/Artemis.app" \
+                --icon "app/Selene.app" 200 190 \
+                --hide-extension "app/Selene.app" \
                 --app-drop-link 400 185 \
                 "../installer-Release/Artemis-$VERSION.dmg" \
-                "app/Artemis.app"
+                "app/Selene.app"
               cd ../..
-            elif [ -d "Artemis.app" ]; then
-              echo "Found Artemis.app at root level"
+            elif [ -d "Selene.app" ]; then
+              echo "Found Selene.app at root level"
               # Create a simple DMG manually with proper filename
               mkdir -p ../installer-Release
               create-dmg --volname "Artemis-$VERSION" \
                 --icon-size 80 \
-                --icon "Artemis.app" 200 190 \
-                --hide-extension "Artemis.app" \
+                --icon "Selene.app" 200 190 \
+                --hide-extension "Selene.app" \
                 --app-drop-link 400 185 \
                 "../installer-Release/Artemis-$VERSION.dmg" \
-                "Artemis.app"
+                "Selene.app"
               cd ../..
             else
-              echo "ERROR: Artemis.app not found in build/build-Release"
+              echo "ERROR: Selene.app not found in build/build-Release"
               echo "Available directories in build/build-Release:"
               find . -name "*.app" -type d | head -10
               exit 1
@@ -1065,12 +1065,12 @@ jobs:
         mkdir -p linux-package/bin
         
         # Copy the main binary
-        cp app/artemis linux-package/bin/
+        cp app/selene linux-package/bin/
         
         # Bundle critical shared libraries that may not be available on all systems
         # Include SDL2 main library and SDL2_ttf which are commonly missing
         echo "Bundling SDL2 libraries..."
-        ldd app/artemis | grep -E "(libSDL2-2\.0|libSDL2_ttf|libopus|libssl)" | while read -r line; do
+        ldd app/selene | grep -E "(libSDL2-2\.0|libSDL2_ttf|libopus|libssl)" | while read -r line; do
           lib_path=$(echo "$line" | grep -o '/[^[:space:]]*')
           if [ -n "$lib_path" ] && [ -f "$lib_path" ]; then
             lib_name=$(basename "$lib_path")
@@ -1111,12 +1111,12 @@ jobs:
         done
 
         # Create launch script that sets library path
-        cat > linux-package/artemis << 'EOF'
+        cat > linux-package/selene << 'EOF'
         #!/bin/bash
         # Artemis Desktop launcher script
         
         # Resolve the actual directory where this script is located
-        # This handles symlinks properly (e.g., ~/.local/bin/artemis -> ~/.local/share/artemis-desktop/artemis)
+        # This handles symlinks properly (e.g., ~/.local/bin/selene -> ~/.local/share/artemis-desktop/selene)
         if [ -L "${BASH_SOURCE[0]}" ]; then
             # Script is a symlink, resolve to actual location
             SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
@@ -1127,9 +1127,9 @@ jobs:
         
         # Set library path and execute binary
         export LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
-        exec "$SCRIPT_DIR/bin/artemis" "$@"
+        exec "$SCRIPT_DIR/bin/selene" "$@"
         EOF
-        chmod +x linux-package/artemis
+        chmod +x linux-package/selene
         
         # Create installation script
         cat > linux-package/install.sh << 'EOF'
@@ -1146,28 +1146,28 @@ jobs:
         cp -r * "$INSTALL_DIR/"
         
         # Create symlink to launcher
-        ln -sf "$INSTALL_DIR/artemis" "$BIN_DIR/artemis"
+        ln -sf "$INSTALL_DIR/selene" "$BIN_DIR/selene"
         
         # Create desktop entry
         mkdir -p "$HOME/.local/share/applications"
         cat > "$HOME/.local/share/applications/artemis-desktop.desktop" << 'EOD'
         [Desktop Entry]
         Type=Application
-        Name=Artemis Desktop
+        Name=Selene
         Comment=Game streaming client
-        Exec=artemis
+        Exec=selene
         Icon=artemis-desktop
         Categories=Game;Network;
         EOD
         
         echo "Installation complete!"
-        echo "You can run 'artemis' from terminal or find it in your applications menu."
-        echo "If 'artemis' command is not found, add ~/.local/bin to your PATH"
+        echo "You can run 'selene' from terminal or find it in your applications menu."
+        echo "If 'selene' command is not found, add ~/.local/bin to your PATH"
         EOF
         chmod +x linux-package/install.sh
         
         # Copy library info for debugging
-        ldd app/artemis > linux-package/library_dependencies.txt || echo "ldd failed" > linux-package/library_dependencies.txt
+        ldd app/selene > linux-package/library_dependencies.txt || echo "ldd failed" > linux-package/library_dependencies.txt
         
         echo "=== Linux package contents ==="
         ls -la linux-package/
@@ -1441,7 +1441,7 @@ jobs:
         mkdir -p build/build-release/usr/share/icons/hicolor/scalable/apps
         
         # Copy the binary
-        cp app/artemis build/build-release/usr/bin/
+        cp app/selene build/build-release/usr/bin/
         
         # Copy existing Artemis icons
         if [ -f "app/artemis.png" ]; then
@@ -1455,9 +1455,9 @@ jobs:
         cat > build/build-release/usr/share/applications/artemis.desktop << 'EOF'
         [Desktop Entry]
         Type=Application
-        Name=Artemis Desktop
+        Name=Selene
         Comment=Game streaming client for NVIDIA GameStream and Sunshine
-        Exec=artemis
+        Exec=selene
         Icon=artemis
         Categories=Game;Network;
         Keywords=gaming;streaming;nvidia;gamestream;sunshine;
@@ -1726,7 +1726,7 @@ jobs:
               - rm -f app/test_*.cpp || true
               - qmake6 artemis.pro CONFIG+=release "QMAKE_CXXFLAGS+=-fPIC"
               - make -j$(nproc)
-              - install -Dm755 app/artemis /app/bin/artemis-dev
+              - install -Dm755 app/selene /app/bin/artemis-dev
             sources:
               - type: dir
                 path: .
@@ -1813,15 +1813,15 @@ jobs:
     - name: Verify ARM64 binary
       run: |
         echo "Verifying ARM64 binary:"
-        file app/artemis
-        readelf -h app/artemis | grep Machine || true
+        file app/selene
+        readelf -h app/selene | grep Machine || true
 
     - name: Create installation package
       env:
         SEMANTIC_VERSION: ${{ needs.setup-version.outputs.version }}
       run: |
         mkdir -p artemis-package
-        cp app/artemis artemis-package/
+        cp app/selene artemis-package/
         
         # Create simple install script
         cat > artemis-package/install.sh << 'EOF'
@@ -1829,26 +1829,26 @@ jobs:
         echo "Installing Artemis Desktop for Raspberry Pi..."
         
         # Make binary executable
-        chmod +x artemis
+        chmod +x selene
         
         # Copy to local bin directory
         mkdir -p ~/.local/bin
-        cp artemis ~/.local/bin/
+        cp selene ~/.local/bin/
         
         # Create desktop entry
         mkdir -p ~/.local/share/applications
         cat > ~/.local/share/applications/artemis-desktop.desktop << 'EOD'
         [Desktop Entry]
         Type=Application
-        Name=Artemis Desktop
+        Name=Selene
         Comment=Game streaming client
-        Exec=artemis
+        Exec=selene
         Icon=artemis-desktop
         Categories=Game;Network;
         EOD
         
         echo "Installation complete!"
-        echo "You can now run 'artemis' from terminal or find it in applications menu"
+        echo "You can now run 'selene' from terminal or find it in applications menu"
         EOF
         
         chmod +x artemis-package/install.sh
@@ -1865,7 +1865,7 @@ jobs:
         Quick Start:
         1. Extract this archive
         2. Run: ./install.sh
-        3. Launch from terminal: artemis
+        3. Launch from terminal: selene
         EOF
 
         # Create the zip file

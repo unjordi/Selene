@@ -45,54 +45,54 @@ pushd $BUILD_FOLDER
 qmake $SOURCE_ROOT/artemis.pro QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" || fail "Qmake failed!"
 popd
 
-echo Compiling Artemis in $BUILD_CONFIG configuration
+echo Compiling Selene in $BUILD_CONFIG configuration
 pushd $BUILD_FOLDER
 make -j$(sysctl -n hw.logicalcpu) $(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]') || fail "Make failed!"
 popd
 
 echo Saving dSYM file
 pushd $BUILD_FOLDER
-dsymutil app/Artemis.app/Contents/MacOS/Artemis -o Artemis-$VERSION.dsym || fail "dSYM creation failed!"
-cp -R Artemis-$VERSION.dsym $INSTALLER_FOLDER || fail "dSYM copy failed!"
+dsymutil app/Selene.app/Contents/MacOS/Selene -o Selene-$VERSION.dsym || fail "dSYM creation failed!"
+cp -R Selene-$VERSION.dsym $INSTALLER_FOLDER || fail "dSYM copy failed!"
 popd
 
 echo Creating app bundle
 EXTRA_ARGS=
 if [ "$BUILD_CONFIG" == "Debug" ]; then EXTRA_ARGS="$EXTRA_ARGS -use-debug-libs"; fi
 echo Extra deployment arguments: $EXTRA_ARGS
-macdeployqt $BUILD_FOLDER/app/Artemis.app $EXTRA_ARGS -qmldir=$SOURCE_ROOT/app/gui -appstore-compliant || fail "macdeployqt failed!"
+macdeployqt $BUILD_FOLDER/app/Selene.app $EXTRA_ARGS -qmldir=$SOURCE_ROOT/app/gui -appstore-compliant || fail "macdeployqt failed!"
 
 echo Removing dSYM files from app bundle
-find $BUILD_FOLDER/app/Artemis.app/ -name '*.dSYM' | xargs rm -rf
+find $BUILD_FOLDER/app/Selene.app/ -name '*.dSYM' | xargs rm -rf
 
 if [ "$SIGNING_IDENTITY" != "" ]; then
   echo Signing app bundle with entitlements
-  codesign --force --deep --options runtime --timestamp --entitlements "$SOURCE_ROOT/scripts/entitlements.plist" --sign "$SIGNING_IDENTITY" $BUILD_FOLDER/app/Artemis.app || fail "Signing failed!"
+  codesign --force --deep --options runtime --timestamp --entitlements "$SOURCE_ROOT/scripts/entitlements.plist" --sign "$SIGNING_IDENTITY" $BUILD_FOLDER/app/Selene.app || fail "Signing failed!"
 fi
 
 echo Creating DMG
-DMG_NAME="Artemis-$VERSION.dmg"
+DMG_NAME="Selene-$VERSION.dmg"
 
 # Create a properly formatted DMG with custom background and icons
 if [ "$SIGNING_IDENTITY" != "" ]; then
   echo "Creating signed DMG with custom styling..."
   create-dmg \
-    --volname "Artemis" \
+    --volname "Selene" \
     --volicon "$SOURCE_ROOT/app/artemis.icns" \
     --background "$SOURCE_ROOT/scripts/dmg-background.png" \
     --window-pos 200 120 \
     --window-size 660 400 \
     --icon-size 100 \
-    --icon "Artemis.app" 180 170 \
-    --hide-extension "Artemis.app" \
+    --icon "Selene.app" 180 170 \
+    --hide-extension "Selene.app" \
     --app-drop-link 480 170 \
     --no-internet-enable \
     --identity="$SIGNING_IDENTITY" \
     "$INSTALLER_FOLDER/$DMG_NAME" \
-    "$BUILD_FOLDER/app/Artemis.app" || {
+    "$BUILD_FOLDER/app/Selene.app" || {
       echo "create-dmg failed! Trying fallback method..."
       # Fallback to basic DMG creation if fancy DMG fails
-      hdiutil create -volname "Artemis" -srcfolder "$BUILD_FOLDER/app/Artemis.app" -ov -format UDZO "$INSTALLER_FOLDER/$DMG_NAME"
+      hdiutil create -volname "Selene" -srcfolder "$BUILD_FOLDER/app/Selene.app" -ov -format UDZO "$INSTALLER_FOLDER/$DMG_NAME"
       if [ "$?" -ne 0 ]; then
         fail "DMG creation failed even with fallback method!"
       fi
@@ -104,21 +104,21 @@ if [ "$SIGNING_IDENTITY" != "" ]; then
 else
   echo "Creating unsigned DMG with custom styling..."
   create-dmg \
-    --volname "Artemis" \
+    --volname "Selene" \
     --volicon "$SOURCE_ROOT/app/artemis.icns" \
     --background "$SOURCE_ROOT/scripts/dmg-background.png" \
     --window-pos 200 120 \
     --window-size 660 400 \
     --icon-size 100 \
-    --icon "Artemis.app" 180 170 \
-    --hide-extension "Artemis.app" \
+    --icon "Selene.app" 180 170 \
+    --hide-extension "Selene.app" \
     --app-drop-link 480 170 \
     --no-internet-enable \
     "$INSTALLER_FOLDER/$DMG_NAME" \
-    "$BUILD_FOLDER/app/Artemis.app" || {
+    "$BUILD_FOLDER/app/Selene.app" || {
       echo "create-dmg failed! Trying fallback method..."
       # Fallback to basic DMG creation if fancy DMG fails
-      hdiutil create -volname "Artemis" -srcfolder "$BUILD_FOLDER/app/Artemis.app" -ov -format UDZO "$INSTALLER_FOLDER/$DMG_NAME"
+      hdiutil create -volname "Selene" -srcfolder "$BUILD_FOLDER/app/Selene.app" -ov -format UDZO "$INSTALLER_FOLDER/$DMG_NAME"
       if [ "$?" -ne 0 ]; then
         fail "DMG creation failed even with fallback method!"
       fi
@@ -135,7 +135,7 @@ fi
 
 # Create build info file
 cat > $INSTALLER_FOLDER/build_info_macos.txt << EOF
-Artemis Desktop macOS Universal Development Build
+Selene Desktop macOS Universal Development Build
 Version: $VERSION
 Architecture: Universal (x86_64 + arm64)
 Build Configuration: $BUILD_CONFIG
@@ -143,7 +143,7 @@ Built: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
 
 Installation Notes:
 - This is a universal binary that works on both Intel and Apple Silicon Macs
-- If macOS says the app is "damaged", run: xattr -cr Artemis.app
+- If macOS says the app is "damaged", run: xattr -cr Selene.app
 - Or go to System Preferences > Security & Privacy and allow the app
 - This is a development build and may trigger Gatekeeper warnings
 EOF

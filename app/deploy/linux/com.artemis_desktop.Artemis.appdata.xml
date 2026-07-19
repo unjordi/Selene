@@ -827,7 +827,7 @@
 	<launchable type="desktop-id">com.artemis_desktop.Artemis.desktop</launchable>
 
 	<provides>
-		<binary>artemis</binary>
+		<binary>selene</binary>
 	</provides>
 
 	<content_rating type="oars-1.0" />

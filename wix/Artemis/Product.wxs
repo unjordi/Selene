@@ -92,7 +92,7 @@
         <File Id="ArtemisExe"
               KeyPath="yes"
               Checksum="yes"
-              Source="$(var.BuildDir)\app\$(var.Configuration)\Artemis.exe">
+              Source="$(var.BuildDir)\app\$(var.Configuration)\Selene.exe">
           <fire:FirewallException Id="ArtemisFirewallException"
                                   Scope="any"
                                   IgnoreFailure="yes"

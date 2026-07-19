@@ -298,11 +298,11 @@ echo DEBUG: Forcing entry into compilation section after qmake
 
 rem Verify the build actually produced something
 echo Verifying build output...
-echo DEBUG: Checking if Artemis.exe exists at app\%BUILD_CONFIG%\Artemis.exe
-if exist "app\%BUILD_CONFIG%\Artemis.exe" (
-    echo SUCCESS: Artemis.exe was built successfully
+echo DEBUG: Checking if Selene.exe exists at app\%BUILD_CONFIG%\Selene.exe
+if exist "app\%BUILD_CONFIG%\Selene.exe" (
+    echo SUCCESS: Selene.exe was built successfully
 ) else (
-    echo ERROR: Artemis.exe was not found after build!
+    echo ERROR: Selene.exe was not found after build!
     echo Contents of app directory:
     dir app /s 2>nul
     echo Contents of current directory:
@@ -316,14 +316,14 @@ rem Debug: Check what was actually built
 echo Checking build output:
 dir "app\%BUILD_CONFIG%\*.exe" 2>nul
 if !ERRORLEVEL! NEQ 0 echo No exe files found in app\%BUILD_CONFIG%
-if exist "app\%BUILD_CONFIG%\Artemis.exe" (
-    echo Artemis.exe found, checking architecture...
-    file "app\%BUILD_CONFIG%\Artemis.exe" 2>nul
+if exist "app\%BUILD_CONFIG%\Selene.exe" (
+    echo Selene.exe found, checking architecture...
+    file "app\%BUILD_CONFIG%\Selene.exe" 2>nul
     if !ERRORLEVEL! NEQ 0 echo file command not available
-    dumpbin /headers "app\%BUILD_CONFIG%\Artemis.exe" 2>nul | findstr "machine" 2>nul
+    dumpbin /headers "app\%BUILD_CONFIG%\Selene.exe" 2>nul | findstr "machine" 2>nul
     if !ERRORLEVEL! NEQ 0 echo dumpbin not available
 ) else (
-    echo ERROR: Artemis.exe was not built!
+    echo ERROR: Selene.exe was not built!
     dir "app\*" /s 2>nul
     if !ERRORLEVEL! NEQ 0 echo No files in app directory
 )
@@ -366,7 +366,7 @@ if not x%QT_PATH:\5.=%==x%QT_PATH% (
 )
 
 echo Deploying Qt dependencies
-%WINDEPLOYQT_CMD% --dir %DEPLOY_FOLDER% --%BUILD_CONFIG% --qmldir %SOURCE_ROOT%\app\gui --no-opengl-sw --no-compiler-runtime --no-sql %WINDEPLOYQT_ARGS% %BUILD_FOLDER%\app\%BUILD_CONFIG%\Artemis.exe
+%WINDEPLOYQT_CMD% --dir %DEPLOY_FOLDER% --%BUILD_CONFIG% --qmldir %SOURCE_ROOT%\app\gui --no-opengl-sw --no-compiler-runtime --no-sql %WINDEPLOYQT_ARGS% %BUILD_FOLDER%\app\%BUILD_CONFIG%\Selene.exe
 if !ERRORLEVEL! NEQ 0 goto Error
 
 echo Deleting unused styles
@@ -383,7 +383,7 @@ rmdir /s /q %DEPLOY_FOLDER%\qml\QtQuick\NativeStyle
 
 if "%SIGN%"=="1" (
     echo Signing deployed binaries
-    set FILES_TO_SIGN=%BUILD_FOLDER%\app\%BUILD_CONFIG%\Artemis.exe
+    set FILES_TO_SIGN=%BUILD_FOLDER%\app\%BUILD_CONFIG%\Selene.exe
     for /r "%DEPLOY_FOLDER%" %%f in (*.dll *.exe) do (
         set FILES_TO_SIGN=!FILES_TO_SIGN! %%f
     )
@@ -398,7 +398,7 @@ msbuild %SOURCE_ROOT%\wix\Artemis\Artemis.wixproj -Restore /p:Configuration=%BUI
 if !ERRORLEVEL! NEQ 0 goto Error
 
 echo Copying application binary to deployment directory
-copy %BUILD_FOLDER%\app\%BUILD_CONFIG%\Artemis.exe %DEPLOY_FOLDER%\Artemis.exe
+copy %BUILD_FOLDER%\app\%BUILD_CONFIG%\Selene.exe %DEPLOY_FOLDER%\Selene.exe
 if !ERRORLEVEL! NEQ 0 goto Error
 
 echo Building portable package
