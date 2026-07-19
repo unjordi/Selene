@@ -3,6 +3,7 @@
 #include "nvhttp.h"
 #include "nvpairingmanager.h"
 #include "identitymanager.h"
+#include "utils/otpcrypto.h"
 #include <QDebug>
 #include <QCryptographicHash>
 #include <QSslCertificate>
@@ -113,24 +114,12 @@ bool OTPPairingManager::isOTPSupported(NvComputer *computer) const
 
 QString OTPPairingManager::generateOTPHash(const QString &pin, const QString &salt, const QString &passphrase)
 {
-    // Matches Android implementation:
-    // MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    // String plainText = pin + saltStr + passphrase;
-    // byte[] hash = digest.digest(plainText.getBytes());
-
-    QString plainText = pin + salt + passphrase;
-    
-    QCryptographicHash hash(QCryptographicHash::Sha256);
-    hash.addData(plainText.toUtf8());
-    
-    QByteArray result = hash.result();
-    
-    // Convert to hex string (uppercase to match Android)
-    QString hexString = result.toHex().toUpper();
-    
-    qDebug() << "OTPPairingManager: Generated OTP hash for PIN:" << pin << "Salt:" << salt;
-    
-    return hexString;
+    // Single source of truth: the algorithm (SHA-256(pin+salt+passphrase) ->
+    // uppercase hex, matching the Android implementation) lives in OtpCrypto
+    // (app/utils/otpcrypto.h) where it is unit-tested without pulling in the
+    // network stack. Do NOT log pin/salt/passphrase here — they are the pairing
+    // secret and must never reach the log.
+    return OtpCrypto::generateOtpHash(pin, salt, passphrase);
 }
 
 void OTPPairingManager::performOTPPairing(NvComputer *computer, const QString &pin, const QString &passphrase)
@@ -146,10 +135,7 @@ void OTPPairingManager::performOTPPairing(NvComputer *computer, const QString &p
     
     // Generate the OTP hash using the same salt that will be sent in the pairing request
     QString otpHash = generateOTPHash(pin, saltStr, passphrase);
-    
-    qDebug() << "OTPPairingManager: Generated OTP hash:" << otpHash;
-    qDebug() << "OTPPairingManager: Using salt:" << saltStr;
-    
+
     emit pairingProgress("Connecting to server...");
     
     // Send the HTTP pairing request with the correct hash and salt
@@ -165,10 +151,7 @@ void OTPPairingManager::sendOTPPairingRequest(NvComputer *computer, const QStrin
         NvHTTP http(computer);
         
         qDebug() << "OTPPairingManager: Starting Apollo OTP pairing";
-        qDebug() << "OTPPairingManager: PIN from user (server-generated):" << m_currentPin;
-        qDebug() << "OTPPairingManager: Passphrase from user:" << m_currentPassphrase;
-        qDebug() << "OTPPairingManager: Generated OTP hash:" << otpHash;
-        qDebug() << "OTPPairingManager: Using salt:" << salt;
+        // Never log the PIN, passphrase, salt or hash — they are the pairing secret.
         qDebug() << "OTPPairingManager: Server HTTP URL:" << http.m_BaseUrlHttp.toString();
         qDebug() << "OTPPairingManager: Server HTTPS URL:" << http.m_BaseUrlHttps.toString();
         
@@ -321,19 +304,9 @@ void OTPPairingManager::onPairingTimeout()
 
 bool OTPPairingManager::validatePinFormat(const QString &pin)
 {
-    // PIN must be exactly 4 digits (matches Android implementation)
-    if (pin.length() != OTP_PIN_LENGTH) {
-        return false;
-    }
-
-    // Check that all characters are digits
-    for (const QChar &c : pin) {
-        if (!c.isDigit()) {
-            return false;
-        }
-    }
-
-    return true;
+    // Single source of truth (see OtpCrypto): a valid PIN is exactly 4 digits,
+    // matching the Android implementation.
+    return OtpCrypto::validatePinFormat(pin);
 }
 
 OTPPairingManager::PairState OTPPairingManager::performApolloOTPPairing(NvPairingManager &pairingManager, NvComputer *serverInfo, const QString &pin, const QString &passphrase)
