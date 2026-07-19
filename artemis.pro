@@ -16,6 +16,12 @@ win32:!winrt {
     app.depends += soundio
 }
 
+# Unit tests (QtTest). Opt-in only: `qmake CONFIG+=test` — a normal build
+# (qmake && make) ignores tests/ entirely. Run with `make check`.
+test {
+    SUBDIRS += tests
+}
+
 # Support debug and release builds from command line for CI
 CONFIG += debug_and_release
 

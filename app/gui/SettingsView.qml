@@ -518,8 +518,10 @@ Flickable {
                                 var hasCustomValue = fpsField.text && fpsField.text.trim() !== ""
                                 
                                 if (hasCustomValue) {
-                                    // User entered a custom refresh rate - enable fractional refresh rate mode
-                                    var refreshRate = parseFloat(enteredValue)
+                                    // User entered a custom refresh rate - enable fractional refresh rate mode.
+                                    // Parse locale-independently: accept both '.' and ',' as the decimal
+                                    // separator so e.g. 59.94 isn't truncated to 59 under comma locales.
+                                    var refreshRate = parseFloat(String(enteredValue).replace(",", "."))
                                     if (!isNaN(refreshRate)) {
                                         StreamingPreferences.customRefreshRate = refreshRate
                                         StreamingPreferences.enableFractionalRefreshRate = true
@@ -595,6 +597,12 @@ Flickable {
                                                 bottom: 10.0
                                                 top: 500.0
                                                 decimals: 2
+                                                // Force '.' as the decimal separator regardless of the
+                                                // system locale, so '59.94' validates everywhere (under a
+                                                // comma locale the default validator rejects the dot and
+                                                // disables the OK button).
+                                                locale: "C"
+                                                notation: DoubleValidator.StandardNotation
                                             }
 
                                         onTextChanged: {
@@ -917,7 +925,7 @@ Flickable {
             id: artemisStreamingGroupBox
             width: (parent.width - (parent.leftPadding + parent.rightPadding))
             padding: 12
-            title: "<font color=\"skyblue\">" + qsTr("Artemis Streaming Enhancements") + "</font>"
+            title: "<font color=\"skyblue\">" + qsTr("Selene Streaming Enhancements") + "</font>"
             font.pointSize: 12
 
             Column {
@@ -1086,7 +1094,7 @@ Flickable {
                 CheckBox {
                     id: muteOnFocusLossCheck
                     width: parent.width
-                    text: qsTr("Mute audio stream when Artemis is not the active window")
+                    text: qsTr("Mute audio stream when Selene is not the active window")
                     font.pointSize: 12
                     visible: SystemProperties.hasDesktopEnvironment
                     checked: StreamingPreferences.muteOnFocusLoss
@@ -1097,7 +1105,7 @@ Flickable {
                     ToolTip.delay: 1000
                     ToolTip.timeout: 5000
                     ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Mutes Artemis's audio when you Alt+Tab out of the stream or click on a different window.")
+                    ToolTip.text: qsTr("Mutes Selene's audio when you Alt+Tab out of the stream or click on a different window.")
                 }
             }
         }
@@ -1317,7 +1325,7 @@ Flickable {
                         if (StreamingPreferences.language !== new_language) {
                             StreamingPreferences.language = languageListModel.get(currentIndex).val
                             if (!StreamingPreferences.retranslate()) {
-                                ToolTip.show(qsTr("You must restart Artemis for this change to take effect"), 5000)
+                                ToolTip.show(qsTr("You must restart Selene for this change to take effect"), 5000)
                             }
                             else {
                                 // Force the back operation to pop any AppView pages that exist.
@@ -1498,7 +1506,7 @@ Flickable {
                         ToolTip.timeout: 10000
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("This enables the capture of system-wide keyboard shortcuts like Alt+Tab that would normally be handled by the client OS while streaming.") + "\n\n" +
-                                      qsTr("NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Artemis.")
+                                      qsTr("NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Selene.")
                     }
 
                     AutoResizingComboBox {
@@ -1659,7 +1667,7 @@ Flickable {
                 CheckBox {
                     id: backgroundGamepadCheck
                     width: parent.width
-                    text: qsTr("Process gamepad input when Artemis is in the background")
+                    text: qsTr("Process gamepad input when Selene is in the background")
                     font.pointSize: 12
                     visible: SystemProperties.hasDesktopEnvironment
                     checked: StreamingPreferences.backgroundGamepad
@@ -1670,7 +1678,7 @@ Flickable {
                     ToolTip.delay: 1000
                     ToolTip.timeout: 5000
                     ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Allows Artemis to capture gamepad inputs even if it's not the current window in focus")
+                    ToolTip.text: qsTr("Allows Selene to capture gamepad inputs even if it's not the current window in focus")
                 }
             }
         }
@@ -1964,7 +1972,7 @@ Flickable {
             id: artemisSettingsGroupBox
             width: (parent.width - (parent.leftPadding + parent.rightPadding))
             padding: 12
-            title: "<font color=\"skyblue\">" + qsTr("Artemis Features") + "</font>"
+            title: "<font color=\"skyblue\">" + qsTr("Selene Features") + "</font>"
             font.pointSize: 12
 
             Column {

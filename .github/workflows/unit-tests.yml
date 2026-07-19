@@ -1,0 +1,51 @@
+name: Unit Tests
+
+# First-party QtTest unit suite for Selene. Self-contained (header-only logic
+# under app/utils/), so it needs neither submodules nor the full app build —
+# just Qt6 base + testlib. Opt-in build flag: `qmake6 CONFIG+=test`.
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - 'feat/**'
+      - 'fix/**'
+      - 'chore/**'
+      - 'docs/**'
+      - 'test/**'
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+concurrency:
+  group: unit-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qttest:
+    name: QtTest (Ubuntu 24.04, Qt6)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt6 + build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qt6-base-dev qt6-base-dev-tools build-essential
+
+      - name: Build tests
+        run: |
+          mkdir -p build-test && cd build-test
+          qmake6 CONFIG+=test ../tests/tests.pro
+          make -j"$(nproc)"
+
+      # Hard gate: the suite is all-green. Good candidate for a required check.
+      - name: Run tests
+        run: |
+          cd build-test
+          ./otpcrypto/tst_otpcrypto
+          ./refreshrate/tst_refreshrate

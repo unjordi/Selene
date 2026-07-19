@@ -1,36 +1,34 @@
-# Artemis Qt
+# Selene
 
-[Artemis Qt](https://github.com/wjbeckett/artemis) is an enhanced cross-platform client for NVIDIA GameStream and [Apollo](https://github.com/ClassicOldSong/Apollo)/[Sunshine](https://github.com/LizardByte/Sunshine) servers. It brings the advanced features from [Artemis Android](https://github.com/ClassicOldSong/moonlight-android) to desktop platforms.
+> **Selene** is a community-maintained fork of [**Artemis**](https://github.com/wjbeckett/artemis) by [wjbeckett](https://github.com/wjbeckett) — which is itself a fork of [**Moonlight Qt**](https://github.com/moonlight-stream/moonlight-qt) by the [Moonlight Team](https://github.com/moonlight-stream). Selene revives and maintains the desktop client and pairs with its sibling host [**Helios**](https://github.com/unjordi/Helios). Full credit to the upstream projects — see Attribution below.
+
+Selene is an enhanced cross-platform client for NVIDIA GameStream and [Apollo](https://github.com/ClassicOldSong/Apollo) / [Helios](https://github.com/unjordi/Helios) / [Sunshine](https://github.com/LizardByte/Sunshine) servers. It brings the advanced features from [Artemis Android](https://github.com/ClassicOldSong/moonlight-android) to desktop platforms.
 
 ## 🙏 Attribution
 
-Artemis Qt is built upon the excellent foundation of [**Moonlight Qt**](https://github.com/moonlight-stream/moonlight-qt) by the [Moonlight Team](https://github.com/moonlight-stream). We extend our sincere gratitude to the original developers for creating such a robust and well-architected streaming client.
+Selene is a fork of [**Artemis**](https://github.com/wjbeckett/artemis) by [wjbeckett](https://github.com/wjbeckett), which is built upon the excellent foundation of [**Moonlight Qt**](https://github.com/moonlight-stream/moonlight-qt) by the [Moonlight Team](https://github.com/moonlight-stream). We extend our sincere gratitude to all of the original developers for creating such a robust and well-architected streaming client.
 
 **Key Credits:**
+- **Direct upstream (parent fork)** - [Artemis](https://github.com/wjbeckett/artemis) by [wjbeckett](https://github.com/wjbeckett)
 - **Core streaming technology** - [Moonlight Qt](https://github.com/moonlight-stream/moonlight-qt)
 - **Enhanced features inspiration** - [Artemis Android](https://github.com/ClassicOldSong/moonlight-android) by [ClassicOldSong](https://github.com/ClassicOldSong)
-- **Server compatibility** - [Apollo](https://github.com/ClassicOldSong/Apollo) and [Sunshine](https://github.com/LizardByte/Sunshine) projects
+- **Server compatibility** - [Apollo](https://github.com/ClassicOldSong/Apollo), [Helios](https://github.com/unjordi/Helios), and [Sunshine](https://github.com/LizardByte/Sunshine) projects
 
-[![Build Status](https://github.com/wjbeckett/artemis/workflows/Build%20Artemis%20Qt/badge.svg)](https://github.com/wjbeckett/artemis/actions)
-[![Downloads](https://img.shields.io/github/downloads/wjbeckett/artemis/total)](https://github.com/wjbeckett/artemis/releases)
+[![Development Build](https://github.com/unjordi/Selene/actions/workflows/dev-build.yml/badge.svg)](https://github.com/unjordi/Selene/actions/workflows/dev-build.yml)
+[![Downloads](https://img.shields.io/github/downloads/unjordi/Selene/total)](https://github.com/unjordi/Selene/releases)
 
 ## 💖 Support the Project
 
-If you find Artemis Qt useful and want to support continued development, you can:
+Selene is free and community-maintained. Ways to help:
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/wjbeckett)
-
-Your support helps cover development time, testing on multiple platforms, and keeping the project maintained. Every contribution, no matter how small, is greatly appreciated! 🙏
-
-**Other ways to support:**
 - ⭐ **Star the repository** to show your appreciation
 - 🐛 **Report bugs** and help improve the experience for everyone
-- 🔄 **Share Artemis** with other gamers and streamers
+- 🔄 **Share Selene** with other gamers and streamers
 - 💻 **Contribute code** or documentation improvements
 
-## ✨ Artemis Features
+## ✨ Selene Features
 
-Artemis Qt includes all the features of Moonlight Qt, plus these enhanced capabilities:
+Selene includes all the features of Moonlight Qt, plus these enhanced capabilities:
 
 ### 🎯 Phase 1 (Foundation) - Complete
 - **📋 Clipboard Sync** - Seamlessly sync clipboard content between client and server - ✅ **COMPLETE**
@@ -56,7 +54,7 @@ Artemis Qt includes all the features of Moonlight Qt, plus these enhanced capabi
 
 ## 🎮 Perfect for Steam Deck
 
-Artemis Qt is specifically optimized for handheld gaming devices like the Steam Deck:
+Selene is specifically optimized for handheld gaming devices like the Steam Deck:
 
 - **Embedded Mode** - Optimized UI for handheld devices
 - **GPU-Optimized Rendering** - Efficient rendering for lower-power GPUs
@@ -98,7 +96,7 @@ Artemis Qt is specifically optimized for handheld gaming devices like the Steam 
 > **Note:** The Quick Menu provides easy access to clipboard sync, server commands, and other streaming controls during your session.
 
 ## 📥 Downloads
-All downloads are available in [Releases](https://github.com/wjbeckett/artemis/releases) 
+All downloads are available in [Releases](https://github.com/unjordi/Selene/releases)
 
 ### �️ Platform Support
 
@@ -155,8 +153,8 @@ This is normal for development builds and doesn't indicate actual damage to the 
 ### Quick Start
 ```bash
 # Clone the repository
-git clone https://github.com/wjbeckett/artemis.git
-cd artemis
+git clone https://github.com/unjordi/Selene.git
+cd Selene
 
 # Run the development setup script
 chmod +x scripts/setup-dev.sh
@@ -207,7 +205,7 @@ sudo dnf install qt6-qtbase-devel qt6-qtdeclarative-devel \
 git submodule update --init --recursive
 
 # Configure and build
-qmake6 moonlight-qt.pro CONFIG+=release
+qmake6 artemis.pro CONFIG+=release
 make -j$(nproc)  # Linux
 make -j$(sysctl -n hw.ncpu)  # macOS
 nmake  # Windows
@@ -215,7 +213,7 @@ nmake  # Windows
 
 ## 🎮 Features Comparison
 
-| Feature | Moonlight Qt | Artemis Qt |
+| Feature | Moonlight Qt | Selene |
 |---------|--------------|------------|
 | GameStream/Sunshine Support | ✅ | ✅ |
 | Hardware Video Decoding | ✅ | ✅ |
@@ -261,7 +259,7 @@ We now have **automated development builds** that:
 - 🎯 Support all platforms (Windows, macOS, Linux, AppImage, Flatpak, Steam Deck)
 - ⚡ Let you test new features immediately
 
-Want to help test new features? Check out our [development releases](https://github.com/wjbeckett/artemis/releases?q=prerelease%3Atrue)!
+Want to help test new features? Check out our [development releases](https://github.com/unjordi/Selene/releases?q=prerelease%3Atrue)!
 
 ## 🤝 Contributing
 
@@ -282,6 +280,8 @@ We welcome contributions! Here's how to get started:
 
 ## 🔗 Related Projects
 
+- **[Artemis](https://github.com/wjbeckett/artemis)** - The direct upstream this fork is based on
+- **[Helios](https://github.com/unjordi/Helios)** - Selene's sibling host (fork of Apollo)
 - **[Artemis Android](https://github.com/ClassicOldSong/moonlight-android)** - The original Artemis for Android
 - **[Apollo Server](https://github.com/ClassicOldSong/Apollo)** - Enhanced GameStream server
 - **[Moonlight Qt](https://github.com/moonlight-stream/moonlight-qt)** - The upstream project
@@ -293,6 +293,7 @@ This project is licensed under the GPL v3 License - see the [LICENSE](LICENSE) f
 
 ## 🙏 Acknowledgments
 
+- **[wjbeckett](https://github.com/wjbeckett)** - Creator of Artemis (Qt), the direct upstream of Selene
 - **[ClassicOldSong](https://github.com/ClassicOldSong)** - Creator of Artemis Android and Apollo server
 - **[Moonlight Team](https://github.com/moonlight-stream)** - For the excellent foundation
 - **[LizardByte](https://github.com/LizardByte)** - For the Sunshine server

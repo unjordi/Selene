@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleExecutable</key>
-	<string>Artemis</string>
+	<string>Selene</string>
 	<key>CFBundleGetInfoString</key>
 	<string>Stream games and other applications from another PC</string>
 	<key>CFBundleIconFile</key>
@@ -37,12 +37,12 @@
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Artemis uses the local network to connect to your gaming PC for streaming.</string>
+	<string>Selene uses the local network to connect to your gaming PC for streaming.</string>
 	<key>CFBundleVersion</key>
 	<string>0.5.6</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.5.6</string>
 	<key>CFBundleDisplayName</key>
-	<string>Artemis</string>
+	<string>Selene</string>
 </dict>
 </plist>

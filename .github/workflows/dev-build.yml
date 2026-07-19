@@ -1088,7 +1088,28 @@ jobs:
             cp "$SDL2_LIB" linux-package/lib/
           fi
         fi
-        
+
+        # Explicit fallback for SDL2_ttf — the ldd-parse loop above can drop it on
+        # some hosts, which is exactly the "libSDL2_ttf-2.0.so.0: cannot open shared
+        # object file" failure reported in #62.
+        if [ ! -f "linux-package/lib/libSDL2_ttf-2.0.so.0" ]; then
+          echo "Explicitly looking for SDL2_ttf library..."
+          TTF_LIB=$(find /usr/lib* /lib* -name "libSDL2_ttf-2.0.so.0" 2>/dev/null | head -1)
+          if [ -n "$TTF_LIB" ] && [ -f "$TTF_LIB" ]; then
+            echo "Found and bundling SDL2_ttf: $TTF_LIB"
+            cp "$TTF_LIB" linux-package/lib/
+          fi
+        fi
+
+        # Bundle transitive deps of the bundled libs (freetype/harfbuzz/png/etc.)
+        # so SDL2_ttf can actually load on clean systems.
+        for L in linux-package/lib/*.so*; do
+          ldd "$L" 2>/dev/null | grep -E "(libfreetype|libharfbuzz|libpng|libbrotli|libbz2|libgraphite)" \
+            | grep -o '/[^[:space:]]*' | while read -r dep; do
+              [ -f "$dep" ] && cp -n "$dep" linux-package/lib/
+          done
+        done
+
         # Create launch script that sets library path
         cat > linux-package/artemis << 'EOF'
         #!/bin/bash
@@ -1571,14 +1592,14 @@ jobs:
           # Mount host GL/Vulkan drivers from the Freedesktop runtime
           org.freedesktop.Platform.GL.default:
             version: '23.08'
-            directory: gl-default
+            directory: lib/gl-default
             subdirectories: true
             no-autodownload: true
             autodelete: false
             add-ld-path: lib
           org.freedesktop.Platform.GL.nvidia:
             version: '23.08'
-            directory: gl-nvidia
+            directory: lib/gl-nvidia
             subdirectories: true
             no-autodownload: true
             autodelete: false
@@ -1586,14 +1607,14 @@ jobs:
           # Mount host VA-API drivers for hardware video decode
           org.freedesktop.Platform.VAAPI.Intel:
             version: '23.08'
-            directory: vaapi-intel
+            directory: lib/vaapi-intel
             subdirectories: true
             no-autodownload: true
             autodelete: false
             add-ld-path: lib
           org.freedesktop.Platform.VAAPI.AMD:
             version: '23.08'
-            directory: vaapi-amd
+            directory: lib/vaapi-amd
             subdirectories: true
             no-autodownload: true
             autodelete: false
