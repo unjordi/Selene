@@ -227,8 +227,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="66"/>
-        <source>This PC&apos;s Internet connection is blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>Internetové připojení tohoto počítače blokuje Moonlight. Streamování přes internet nemusí fungovat, dokud jste připojeni k této síti.</translation>
+        <source>This PC&apos;s Internet connection is blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>Internetové připojení tohoto počítače blokuje Selene. Streamování přes internet nemusí fungovat, dokud jste připojeni k této síti.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="69"/>
@@ -272,8 +272,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="228"/>
-        <source>The version of GeForce Experience on %1 is not supported by this build of Moonlight. You must update Moonlight to stream from %1.</source>
-        <translation>Verze GeForce Experience na %1 není touto verzí Moonlightu podporována. Abyste mohli streamovat z %1, musíte aktualizovat Moonlight na novější verzi.</translation>
+        <source>The version of GeForce Experience on %1 is not supported by this build of Selene. You must update Selene to stream from %1.</source>
+        <translation>Verze GeForce Experience na %1 není touto verzí Seleneu podporována. Abyste mohli streamovat z %1, musíte aktualizovat Selene na novější verzi.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="331"/>
@@ -282,8 +282,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="342"/>
-        <source>This network does not appear to be blocking Moonlight. If you still have trouble connecting, check your PC&apos;s firewall settings.</source>
-        <translation>Nevypadá to, že by vaše síť blokovala Moonlight. Pokud máte pořád potíže s připojením, zkontrolujte nastavení firewallu vašeho počítače.</translation>
+        <source>This network does not appear to be blocking Selene. If you still have trouble connecting, check your PC&apos;s firewall settings.</source>
+        <translation>Nevypadá to, že by vaše síť blokovala Selene. Pokud máte pořád potíže s připojením, zkontrolujte nastavení firewallu vašeho počítače.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="342"/>
@@ -292,8 +292,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="346"/>
-        <source>Your PC&apos;s current network connection seems to be blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>Vypadá to, že vaše současná síť blokuje Moonlight. Streamování přes internet nemusí fungovat, zatímco jste k této síti připojeni.</translation>
+        <source>Your PC&apos;s current network connection seems to be blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>Vypadá to, že vaše současná síť blokuje Selene. Streamování přes internet nemusí fungovat, zatímco jste k této síti připojeni.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="346"/>
@@ -302,8 +302,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="338"/>
-        <source>The network test could not be performed because none of Moonlight&apos;s connection testing servers were reachable from this PC. Check your Internet connection or try again later.</source>
-        <translation>Test sítě se nemohl provést, protože Moonlight se nemůže připojit k žádnému z testovacích serverů. Zkontrolujte, že jste připojeni k internetu a zkuste to znovu.</translation>
+        <source>The network test could not be performed because none of Selene&apos;s connection testing servers were reachable from this PC. Check your Internet connection or try again later.</source>
+        <translation>Test sítě se nemohl provést, protože Selene se nemůže připojit k žádnému z testovacích serverů. Zkontrolujte, že jste připojeni k internetu a zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="167"/>
@@ -342,8 +342,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="331"/>
-        <source>Moonlight is testing your network connection to determine if any required ports are blocked.</source>
-        <translation>Moonlight testuje vaše síťové spojení aby otestoval, jestli jsou některé potřebné porty blokovány.</translation>
+        <source>Selene is testing your network connection to determine if any required ports are blocked.</source>
+        <translation>Selene testuje vaše síťové spojení aby otestoval, jestli jsou některé potřebné porty blokovány.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="358"/>
@@ -404,8 +404,8 @@
     <message>
         <location filename="../cli/quitstream.cpp" line="88"/>
         <location filename="../cli/startstream.cpp" line="89"/>
-        <source>Computer %1 has not been paired. Please open Moonlight to pair before streaming.</source>
-        <translation>Počítač %1 nebyl spárován. Prosím otevřete Moonlight a spárujte jej, než budete streamovat.</translation>
+        <source>Computer %1 has not been paired. Please open Selene to pair before streaming.</source>
+        <translation>Počítač %1 nebyl spárován. Prosím otevřete Selene a spárujte jej, než budete streamovat.</translation>
     </message>
     <message>
         <location filename="../cli/quitstream.cpp" line="102"/>
@@ -420,8 +420,8 @@
     </message>
     <message>
         <location filename="../cli/listapps.cpp" line="99"/>
-        <source>Computer %1 has not been paired. Please open Moonlight to pair before retrieving games list.</source>
-        <translation>Počítač %1 nebyl spárován. Prosím otevřete Moonlight pro spárování, než si zobrazíte seznam her.</translation>
+        <source>Computer %1 has not been paired. Please open Selene to pair before retrieving games list.</source>
+        <translation>Počítač %1 nebyl spárován. Prosím otevřete Selene pro spárování, než si zobrazíte seznam her.</translation>
     </message>
 </context>
 <context>
@@ -509,8 +509,8 @@
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="966"/>
-        <source>The version of GeForce Experience on %1 is not supported by this build of Moonlight. You must update Moonlight to stream from %1.</source>
-        <translation>Verze GeForce Experience na %1 není touto verzí Moonlightu podporována. Abyste mohli streamovat z %1, musíte aktualizovat Moonlight na novější verzi.</translation>
+        <source>The version of GeForce Experience on %1 is not supported by this build of Selene. You must update Selene to stream from %1.</source>
+        <translation>Verze GeForce Experience na %1 není touto verzí Seleneu podporována. Abyste mohli streamovat z %1, musíte aktualizovat Selene na novější verzi.</translation>
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="971"/>
@@ -644,8 +644,8 @@
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="1183"/>
-        <source>An attached gamepad has no mapping and won&apos;t be usable. Visit the Moonlight help to resolve this.</source>
-        <translation>Připojený gamepad nemá žádné mapování a není použitelný. Navštivte nápovědu Moonlightu pro pomoc s řešením.</translation>
+        <source>An attached gamepad has no mapping and won&apos;t be usable. Visit the Selene help to resolve this.</source>
+        <translation>Připojený gamepad nemá žádné mapování a není použitelný. Navštivte nápovědu Seleneu pro pomoc s řešením.</translation>
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="1201"/>
@@ -839,13 +839,13 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="929"/>
-        <source>Mute audio stream when Moonlight is not the active window</source>
-        <translation>Vypnout zvuk streamování, když Moonlight není aktivním oknem</translation>
+        <source>Mute audio stream when Selene is not the active window</source>
+        <translation>Vypnout zvuk streamování, když Selene není aktivním oknem</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="940"/>
-        <source>Mutes Moonlight&apos;s audio when you Alt+Tab out of the stream or click on a different window.</source>
-        <translation>Vypne zvuk Moonlightu, když se přepnete ze streamování pomocí Alt+Tab nebo kliknete na jiné okno.</translation>
+        <source>Mutes Selene&apos;s audio when you Alt+Tab out of the stream or click on a different window.</source>
+        <translation>Vypne zvuk Seleneu, když se přepnete ze streamování pomocí Alt+Tab nebo kliknete na jiné okno.</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="989"/>
@@ -864,8 +864,8 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1160"/>
-        <source>You must restart Moonlight for this change to take effect</source>
-        <translation>Aby se toto nastavení projevilo, musíte restartovat Moonlight</translation>
+        <source>You must restart Selene for this change to take effect</source>
+        <translation>Aby se toto nastavení projevilo, musíte restartovat Selene</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1177"/>
@@ -933,8 +933,8 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1329"/>
-        <source>NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Moonlight.</source>
-        <translation>Poznámka: Některé zkratky, jako například Ctrl+Alt+Del na Windowsu, nelze zachytit žádnou aplikací, ani Moonlightem.</translation>
+        <source>NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Selene.</source>
+        <translation>Poznámka: Některé zkratky, jako například Ctrl+Alt+Del na Windowsu, nelze zachytit žádnou aplikací, ani Seleneem.</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1392"/>
@@ -988,13 +988,13 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1490"/>
-        <source>Process gamepad input when Moonlight is in the background</source>
-        <translation>Zachytávat tlačítka gamepadu, když je Moonlight na pozadí</translation>
+        <source>Process gamepad input when Selene is in the background</source>
+        <translation>Zachytávat tlačítka gamepadu, když je Selene na pozadí</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1501"/>
-        <source>Allows Moonlight to capture gamepad inputs even if it&apos;s not the current window in focus</source>
-        <translation>Umožňuje Moonlightu zachytávat stisknutí tlačítek na gamepadu i když není aktivním oknem</translation>
+        <source>Allows Selene to capture gamepad inputs even if it&apos;s not the current window in focus</source>
+        <translation>Umožňuje Seleneu zachytávat stisknutí tlačítek na gamepadu i když není aktivním oknem</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="949"/>
@@ -1221,8 +1221,8 @@
     </message>
     <message>
         <location filename="../gui/StreamSegue.qml" line="76"/>
-        <source>This PC&apos;s Internet connection is blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>Internetové připojení tohoto počítače blokuje Moonlight. Streamování přes internet nemusí fungovat, dokud jste připojeni k této síti.</translation>
+        <source>This PC&apos;s Internet connection is blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>Internetové připojení tohoto počítače blokuje Selene. Streamování přes internet nemusí fungovat, dokud jste připojeni k této síti.</translation>
     </message>
     <message>
         <location filename="../gui/StreamSegue.qml" line="167"/>
@@ -1269,8 +1269,8 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="364"/>
-        <source>Update available for Moonlight: Version %1</source>
-        <translation>K dispozici je aktualizace pro Moonlight: Verze %1</translation>
+        <source>Update available for Selene: Version %1</source>
+        <translation>K dispozici je aktualizace pro Selene: Verze %1</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="411"/>
@@ -1284,13 +1284,13 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="466"/>
-        <source>This version of Moonlight isn&apos;t optimized for your PC. Please download the &apos;%1&apos; version of Moonlight for the best streaming performance.</source>
-        <translation>Tato verze Moonlightu není optimalizována pro váš počítač. Prosím stáhěnte Moonlight verze &apos;%1&apos; pro nejlepší výkon při streamování.</translation>
+        <source>This version of Selene isn&apos;t optimized for your PC. Please download the &apos;%1&apos; version of Selene for the best streaming performance.</source>
+        <translation>Tato verze Seleneu není optimalizována pro váš počítač. Prosím stáhěnte Selene verze &apos;%1&apos; pro nejlepší výkon při streamování.</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="475"/>
-        <source>Moonlight detected gamepads without a mapping:</source>
-        <translation>Moonlight detekoval gamepady bez mapování:</translation>
+        <source>Selene detected gamepads without a mapping:</source>
+        <translation>Selene detekoval gamepady bez mapování:</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="388"/>
@@ -1299,8 +1299,8 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="449"/>
-        <source>No functioning hardware accelerated video decoder was detected by Moonlight. Your streaming performance may be severely degraded in this configuration.</source>
-        <translation>Moonlight nedetekoval žádný dekodér videa s podporou hardwaru. Výkon vašeho streamování může být v této konfiguraci výrazně zhoršen.</translation>
+        <source>No functioning hardware accelerated video decoder was detected by Selene. Your streaming performance may be severely degraded in this configuration.</source>
+        <translation>Selene nedetekoval žádný dekodér videa s podporou hardwaru. Výkon vašeho streamování může být v této konfiguraci výrazně zhoršen.</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="451"/>

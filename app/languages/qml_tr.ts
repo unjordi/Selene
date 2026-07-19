@@ -227,8 +227,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="66"/>
-        <source>This PC&apos;s Internet connection is blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>Bu bilgisayarın İnternet bağlantısı Moonlight&apos;ı engelliyor. İnternet üzerinden akış, bu ağa bağlıyken çalışmayabilir.</translation>
+        <source>This PC&apos;s Internet connection is blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>Bu bilgisayarın İnternet bağlantısı Selene&apos;ı engelliyor. İnternet üzerinden akış, bu ağa bağlıyken çalışmayabilir.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="69"/>
@@ -272,8 +272,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="228"/>
-        <source>The version of GeForce Experience on %1 is not supported by this build of Moonlight. You must update Moonlight to stream from %1.</source>
-        <translation>%1&apos;deki olan GeForce Experience sürümü Moonlight&apos;ın bu derlemesi tarafından desteklenmiyor. %1&apos;den yayın sağlamak için Moonlight&apos;ı güncellemeniz gerekir.</translation>
+        <source>The version of GeForce Experience on %1 is not supported by this build of Selene. You must update Selene to stream from %1.</source>
+        <translation>%1&apos;deki olan GeForce Experience sürümü Selene&apos;ın bu derlemesi tarafından desteklenmiyor. %1&apos;den yayın sağlamak için Selene&apos;ı güncellemeniz gerekir.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="331"/>
@@ -282,8 +282,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="342"/>
-        <source>This network does not appear to be blocking Moonlight. If you still have trouble connecting, check your PC&apos;s firewall settings.</source>
-        <translation>Bu ağ Moonlight&apos;ı engellemiyor gibi görünüyor. Hala bağlantı sorunu yaşıyorsanız, bilgisayarınızın güvenlik duvarı ayarlarını kontrol edin.</translation>
+        <source>This network does not appear to be blocking Selene. If you still have trouble connecting, check your PC&apos;s firewall settings.</source>
+        <translation>Bu ağ Selene&apos;ı engellemiyor gibi görünüyor. Hala bağlantı sorunu yaşıyorsanız, bilgisayarınızın güvenlik duvarı ayarlarını kontrol edin.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="342"/>
@@ -292,8 +292,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="346"/>
-        <source>Your PC&apos;s current network connection seems to be blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>PC&apos;nizin mevcut ağ bağlantısı Moonlight&apos;ı engelliyor gibi görünüyor. İnternet üzerinden akış, bu ağa bağlıyken çalışmayabilir.</translation>
+        <source>Your PC&apos;s current network connection seems to be blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>PC&apos;nizin mevcut ağ bağlantısı Selene&apos;ı engelliyor gibi görünüyor. İnternet üzerinden akış, bu ağa bağlıyken çalışmayabilir.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="346"/>
@@ -302,8 +302,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="338"/>
-        <source>The network test could not be performed because none of Moonlight&apos;s connection testing servers were reachable from this PC. Check your Internet connection or try again later.</source>
-        <translation>Moonlight&apos;ın bağlantı testi sunucularından hiçbirine bu bilgisayardan erişilemediği için ağ testi gerçekleştirilemedi. İnternet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.</translation>
+        <source>The network test could not be performed because none of Selene&apos;s connection testing servers were reachable from this PC. Check your Internet connection or try again later.</source>
+        <translation>Selene&apos;ın bağlantı testi sunucularından hiçbirine bu bilgisayardan erişilemediği için ağ testi gerçekleştirilemedi. İnternet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="167"/>
@@ -342,8 +342,8 @@
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="331"/>
-        <source>Moonlight is testing your network connection to determine if any required ports are blocked.</source>
-        <translation>Moonlight, gerekli bağlantı noktalarının engellenip engellenmediğini belirlemek için ağ bağlantınızı test ediyor.</translation>
+        <source>Selene is testing your network connection to determine if any required ports are blocked.</source>
+        <translation>Selene, gerekli bağlantı noktalarının engellenip engellenmediğini belirlemek için ağ bağlantınızı test ediyor.</translation>
     </message>
     <message>
         <location filename="../gui/PcView.qml" line="358"/>
@@ -404,8 +404,8 @@
     <message>
         <location filename="../cli/quitstream.cpp" line="88"/>
         <location filename="../cli/startstream.cpp" line="89"/>
-        <source>Computer %1 has not been paired. Please open Moonlight to pair before streaming.</source>
-        <translation>%1 bilgisayarı eşleştirilmedi. Yayından önce eşleştirmek için lütfen Moonlight&apos;ı açın.</translation>
+        <source>Computer %1 has not been paired. Please open Selene to pair before streaming.</source>
+        <translation>%1 bilgisayarı eşleştirilmedi. Yayından önce eşleştirmek için lütfen Selene&apos;ı açın.</translation>
     </message>
     <message>
         <location filename="../cli/quitstream.cpp" line="102"/>
@@ -420,8 +420,8 @@
     </message>
     <message>
         <location filename="../cli/listapps.cpp" line="99"/>
-        <source>Computer %1 has not been paired. Please open Moonlight to pair before retrieving games list.</source>
-        <translation>%1 bilgisayarı eşleştirilmedi. Lütfen oyun listesini almadan önce eşleştirmek için Moonlight&apos;ı açın.</translation>
+        <source>Computer %1 has not been paired. Please open Selene to pair before retrieving games list.</source>
+        <translation>%1 bilgisayarı eşleştirilmedi. Lütfen oyun listesini almadan önce eşleştirmek için Selene&apos;ı açın.</translation>
     </message>
 </context>
 <context>
@@ -494,8 +494,8 @@
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="966"/>
-        <source>The version of GeForce Experience on %1 is not supported by this build of Moonlight. You must update Moonlight to stream from %1.</source>
-        <translation>%1 üzerindeki GeForce Experience sürümü, bu Moonlight yapısı tarafından desteklenmiyor. %1 kaynağından akış yapmak için Moonlight&apos;ı güncellemelisiniz.</translation>
+        <source>The version of GeForce Experience on %1 is not supported by this build of Selene. You must update Selene to stream from %1.</source>
+        <translation>%1 üzerindeki GeForce Experience sürümü, bu Selene yapısı tarafından desteklenmiyor. %1 kaynağından akış yapmak için Selene&apos;ı güncellemelisiniz.</translation>
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="971"/>
@@ -644,8 +644,8 @@
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="1183"/>
-        <source>An attached gamepad has no mapping and won&apos;t be usable. Visit the Moonlight help to resolve this.</source>
-        <translation>Takılı bir gamepad&apos;in haritalaması yoktur ve kullanılamayacaktır. Bunu çözmek için Moonlight yardımını ziyaret edin.</translation>
+        <source>An attached gamepad has no mapping and won&apos;t be usable. Visit the Selene help to resolve this.</source>
+        <translation>Takılı bir gamepad&apos;in haritalaması yoktur ve kullanılamayacaktır. Bunu çözmek için Selene yardımını ziyaret edin.</translation>
     </message>
     <message>
         <location filename="../streaming/session.cpp" line="1201"/>
@@ -844,13 +844,13 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="929"/>
-        <source>Mute audio stream when Moonlight is not the active window</source>
-        <translation>Moonlight etkin pencere olmadığında ses akışını kapat</translation>
+        <source>Mute audio stream when Selene is not the active window</source>
+        <translation>Selene etkin pencere olmadığında ses akışını kapat</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="940"/>
-        <source>Mutes Moonlight&apos;s audio when you Alt+Tab out of the stream or click on a different window.</source>
-        <translation>Yayından Alt+Tab ile çıktığınızda veya farklı bir pencereye tıkladığınızda Moonlight&apos;ın sesini kapatır.</translation>
+        <source>Mutes Selene&apos;s audio when you Alt+Tab out of the stream or click on a different window.</source>
+        <translation>Yayından Alt+Tab ile çıktığınızda veya farklı bir pencereye tıkladığınızda Selene&apos;ın sesini kapatır.</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="989"/>
@@ -869,8 +869,8 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1160"/>
-        <source>You must restart Moonlight for this change to take effect</source>
-        <translation>Bu değişikliğin etkili olması için Moonlight&apos;ı yeniden başlatmanız gerekir</translation>
+        <source>You must restart Selene for this change to take effect</source>
+        <translation>Bu değişikliğin etkili olması için Selene&apos;ı yeniden başlatmanız gerekir</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1177"/>
@@ -938,8 +938,8 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1329"/>
-        <source>NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Moonlight.</source>
-        <translation>NOT: Windows&apos;ta Ctrl+Alt+Del gibi belirli klavye kısayolları Moonlight dahil hiçbir uygulama tarafından engellenemez.</translation>
+        <source>NOTE: Certain keyboard shortcuts like Ctrl+Alt+Del on Windows cannot be intercepted by any application, including Selene.</source>
+        <translation>NOT: Windows&apos;ta Ctrl+Alt+Del gibi belirli klavye kısayolları Selene dahil hiçbir uygulama tarafından engellenemez.</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1392"/>
@@ -993,13 +993,13 @@
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1490"/>
-        <source>Process gamepad input when Moonlight is in the background</source>
-        <translation>Moonlight arka plandayken gamepad verilerini işle</translation>
+        <source>Process gamepad input when Selene is in the background</source>
+        <translation>Selene arka plandayken gamepad verilerini işle</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="1501"/>
-        <source>Allows Moonlight to capture gamepad inputs even if it&apos;s not the current window in focus</source>
-        <translation>Moonlight&apos;ın odaklanılan mevcut pencere olmasa bile gamepad verilerinin yakalamasını sağlar</translation>
+        <source>Allows Selene to capture gamepad inputs even if it&apos;s not the current window in focus</source>
+        <translation>Selene&apos;ın odaklanılan mevcut pencere olmasa bile gamepad verilerinin yakalamasını sağlar</translation>
     </message>
     <message>
         <location filename="../gui/SettingsView.qml" line="949"/>
@@ -1221,8 +1221,8 @@
     </message>
     <message>
         <location filename="../gui/StreamSegue.qml" line="76"/>
-        <source>This PC&apos;s Internet connection is blocking Moonlight. Streaming over the Internet may not work while connected to this network.</source>
-        <translation>Bu bilgisayarın İnternet bağlantısı Moonlight&apos;ı engelliyor. Bu ağa bağlıyken İnternet üzerinden yayın akışı çalışmayabilir.</translation>
+        <source>This PC&apos;s Internet connection is blocking Selene. Streaming over the Internet may not work while connected to this network.</source>
+        <translation>Bu bilgisayarın İnternet bağlantısı Selene&apos;ı engelliyor. Bu ağa bağlıyken İnternet üzerinden yayın akışı çalışmayabilir.</translation>
     </message>
     <message>
         <location filename="../gui/StreamSegue.qml" line="167"/>
@@ -1269,8 +1269,8 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="364"/>
-        <source>Update available for Moonlight: Version %1</source>
-        <translation>Moonlight için güncelleme mevcut: Sürüm %1</translation>
+        <source>Update available for Selene: Version %1</source>
+        <translation>Selene için güncelleme mevcut: Sürüm %1</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="411"/>
@@ -1284,13 +1284,13 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="466"/>
-        <source>This version of Moonlight isn&apos;t optimized for your PC. Please download the &apos;%1&apos; version of Moonlight for the best streaming performance.</source>
-        <translation>Moonlight&apos;ın bu sürümü bilgisayarınız için optimize edilmemiştir. En iyi yayın performansı için lütfen Moonlight&apos;ın &apos;%1&apos; sürümünü indirin.</translation>
+        <source>This version of Selene isn&apos;t optimized for your PC. Please download the &apos;%1&apos; version of Selene for the best streaming performance.</source>
+        <translation>Selene&apos;ın bu sürümü bilgisayarınız için optimize edilmemiştir. En iyi yayın performansı için lütfen Selene&apos;ın &apos;%1&apos; sürümünü indirin.</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="475"/>
-        <source>Moonlight detected gamepads without a mapping:</source>
-        <translation>Moonlight haritalama olmayan oyun kumandalarını algıladı:</translation>
+        <source>Selene detected gamepads without a mapping:</source>
+        <translation>Selene haritalama olmayan oyun kumandalarını algıladı:</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="388"/>
@@ -1299,8 +1299,8 @@
     </message>
     <message>
         <location filename="../gui/main.qml" line="449"/>
-        <source>No functioning hardware accelerated video decoder was detected by Moonlight. Your streaming performance may be severely degraded in this configuration.</source>
-        <translation>Moonlight tarafından çalışan bir donanım hızlandırmalı video kod çözücü algılanmadı. Bu yapılandırmada yayın performansınız ciddi şekilde düşebilir.</translation>
+        <source>No functioning hardware accelerated video decoder was detected by Selene. Your streaming performance may be severely degraded in this configuration.</source>
+        <translation>Selene tarafından çalışan bir donanım hızlandırmalı video kod çözücü algılanmadı. Bu yapılandırmada yayın performansınız ciddi şekilde düşebilir.</translation>
     </message>
     <message>
         <location filename="../gui/main.qml" line="451"/>

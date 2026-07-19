@@ -154,7 +154,7 @@ GlobalCommandLineParser::ParseResult GlobalCommandLineParser::parse(const QStrin
     parser.setupCommonOptions();
     parser.setApplicationDescription(
         "\n"
-        "Starts Moonlight normally if no arguments are given.\n"
+        "Starts Selene normally if no arguments are given.\n"
         "\n"
         "Available actions:\n"
         "  list            List the available apps on a host\n"
@@ -162,7 +162,7 @@ GlobalCommandLineParser::ParseResult GlobalCommandLineParser::parse(const QStrin
         "  stream          Start streaming an app\n"
         "  pair            Pair a new host\n"
         "\n"
-        "See 'moonlight <action> --help' for help of specific action."
+        "See 'selene <action> --help' for help of specific action."
     );
     parser.addPositionalArgument("action", "Action to execute", "<action>");
     parser.parse(args);
@@ -360,7 +360,7 @@ void StreamCommandLineParser::parse(const QStringList &args, StreamingPreference
     parser.addToggleOption("game-optimization", "game optimizations");
     parser.addToggleOption("audio-on-host", "audio on host PC");
     parser.addToggleOption("frame-pacing", "frame pacing");
-    parser.addToggleOption("mute-on-focus-loss", "mute audio when Moonlight window loses focus");
+    parser.addToggleOption("mute-on-focus-loss", "mute audio when Selene window loses focus");
     parser.addToggleOption("background-gamepad", "background gamepad input");
     parser.addToggleOption("reverse-scroll-direction", "inverted scroll direction");
     parser.addToggleOption("swap-gamepad-buttons", "swap A/B and X/Y gamepad buttons (Nintendo-style)");
