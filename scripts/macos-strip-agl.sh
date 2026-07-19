@@ -10,7 +10,11 @@
 #
 # Usage: scripts/macos-strip-agl.sh [QTDIR]
 #   QTDIR defaults to $Qt6_DIR (set by jurplel/install-qt-action) or a Homebrew Qt.
-set -euo pipefail
+#
+# NOTE: intentionally NOT `set -e`. The verification `grep -l` exits non-zero when
+# it finds nothing — i.e. exactly when the strip SUCCEEDED — so `set -e` would abort
+# the script precisely on success. We check the count explicitly instead.
+set -uo pipefail
 
 QTDIR="${1:-${Qt6_DIR:-}}"
 if [ -z "$QTDIR" ] || [ ! -d "$QTDIR/lib" ]; then
@@ -25,9 +29,14 @@ find "$QTDIR/lib" -name '*.prl' -print0 | xargs -0 sed -i '' -e "$strip"
 
 # The OpenGL mkspec vars, for good measure.
 for f in "$QTDIR/mkspecs/common/mac.conf" "$QTDIR/mkspecs/modules/qt_lib_gui_private.pri"; do
-  [ -f "$f" ] && sed -i '' -e "$strip" "$f"
+  if [ -f "$f" ]; then sed -i '' -e "$strip" "$f"; fi
 done
 
-left="$(find "$QTDIR/lib" -name '*.prl' -exec grep -l 'framework AGL' {} + 2>/dev/null | wc -l | tr -d ' ')"
-echo "macos-strip-agl: done ($QTDIR) — .prl still referencing AGL: $left"
-[ "$left" = "0" ]
+# Verify. grep exits 1 on "no match" (the success case) — that's fine here because
+# we are not under `set -e`; we read the count and decide explicitly.
+left="$(find "$QTDIR/lib" -name '*.prl' -print0 | xargs -0 grep -l 'framework AGL' 2>/dev/null | wc -l | tr -d ' ')"
+echo "macos-strip-agl: done ($QTDIR) — .prl still referencing AGL: ${left:-0}"
+if [ "${left:-0}" != "0" ]; then
+  echo "macos-strip-agl: ERROR: AGL still present in ${left} .prl file(s) after strip" >&2
+  exit 1
+fi
