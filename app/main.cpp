@@ -804,7 +804,13 @@ int main(int argc, char *argv[])
             ListCommandLineParser listParser;
             listParser.parse(app.arguments());
             auto launcher = new CliListApps::Launcher(listParser.getHost(), listParser, &app);
-            launcher->execute(new ComputerManager(StreamingPreferences::get()));
+            // Own the ComputerManager (parent it to the launcher, which is parented to
+            // the app) so ~ComputerManager runs during app teardown and stops the
+            // DelayedFlushThread. Otherwise it leaks and that thread races QSettings
+            // static teardown at exit → SIGSEGV in ~QSettings (headless `list` crash).
+            auto computerManager = new ComputerManager(StreamingPreferences::get());
+            computerManager->setParent(launcher);
+            launcher->execute(computerManager);
             hasGUI = false;
             break;
         }
