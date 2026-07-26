@@ -1247,8 +1247,9 @@ jobs:
     name: AppImage Development Build (Moonlight Compatible Dependencies)
     needs: setup-version
     runs-on: ubuntu-22.04  # Use Ubuntu 22.04 since 20.04 is deprecated
-    if: false  # Temporarily disabled
-    # if: needs.setup-version.outputs.should_build == 'true'
+    # Revivido 2026-07-26: AppImage x86_64 con AV1/HDR (FFmpeg/dav1d/libplacebo desde fuente) para el
+    # Steam Deck. glibc 2.35 (Ubuntu 22.04) < glibc del Deck 2.41 -> portable. Ver selene-targets-empaquetado.
+    if: needs.setup-version.outputs.should_build == 'true'
     
     env:
       FFMPEG_CONFIGURE_ARGS: --enable-pic --disable-static --enable-shared --disable-all --enable-avcodec --enable-avformat --enable-swscale --enable-decoder=h264 --enable-decoder=hevc --enable-decoder=av1 --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --enable-hwaccel=av1_vaapi --enable-hwaccel=h264_vdpau --enable-hwaccel=hevc_vdpau --enable-hwaccel=av1_vdpau --enable-hwaccel=h264_vulkan --enable-hwaccel=hevc_vulkan --enable-hwaccel=av1_vulkan --enable-libdav1d --enable-decoder=libdav1d
@@ -1305,7 +1306,9 @@ jobs:
         sudo mv /tmp/appimagetool.AppImage /usr/local/bin/appimagetool
         
         # Install build dependencies (without Vulkan SDK to avoid conflicts)
-        sudo apt install -y python3-pip nasm libgbm-dev libdrm-dev libfreetype6-dev libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libglu1-mesa-dev libibus-1.0-dev libpulse-dev libudev-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev libxcb-dri3-dev libx11-xcb-dev wayland-protocols libopus-dev libvdpau-dev libwayland-dev libwayland-client0 libwayland-cursor0 libwayland-server0 libwayland-egl1-mesa libplacebo-dev || echo "libplacebo-dev not available, will build from source"
+        # libs runtime del plugin XCB de Qt (si faltan, linuxdeployqt aborta con
+        # "libxkbcommon-x11.so.0 => not found" en libqxcb.so) — aprendido en el build local 2026-07-26.
+        sudo apt install -y python3-pip nasm libgbm-dev libdrm-dev libfreetype6-dev libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libglu1-mesa-dev libibus-1.0-dev libpulse-dev libudev-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxkbcommon-dev libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-shape0 libxcb-xkb1 libxcb-util1 libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev libxcb-dri3-dev libx11-xcb-dev wayland-protocols libopus-dev libvdpau-dev libwayland-dev libwayland-client0 libwayland-cursor0 libwayland-server0 libwayland-egl1-mesa libplacebo-dev || echo "libplacebo-dev not available, will build from source"
         
         # Try to install Vulkan SDK, but don't fail the build if it has dependency issues
         sudo apt install -y vulkan-sdk || echo "Vulkan SDK installation had conflicts, proceeding without it"
@@ -1475,6 +1478,11 @@ jobs:
         which linuxdeployqt && linuxdeployqt --version || echo "linuxdeployqt not found"
         which appimagetool && appimagetool --version || echo "appimagetool not found"
         
+        # Selene no usa QtSql; Qt 6.8 trae drivers SQL fantasma (mimer/mysql/psql/odbc) cuyas libs
+        # runtime NO están -> linuxdeployqt aborta ("libmimerapi.so / libmysqlclient.so.21 => not found").
+        # Borra todos menos sqlite (aprendido en el build local 2026-07-26).
+        find "$Qt6_DIR/plugins/sqldrivers" -name 'libqsql*.so' ! -name 'libqsqlite.so' -delete 2>/dev/null || true
+
         echo "=== Preparing AppDir with linuxdeployqt ==="
         linuxdeployqt usr/share/applications/artemis.desktop -unsupported-allow-new-glibc -verbose=2 2>&1 | tee linuxdeployqt.log
         
@@ -1880,10 +1888,105 @@ jobs:
         path: artemis-raspberry-pi-arm64-${{ needs.setup-version.outputs.version }}.zip
         retention-days: 30
 
+  build-appimage-arm64-dev:
+    name: AppImage ARM64 Development Build (Selene aarch64 - RP6/ArmadaOS)
+    needs: setup-version
+    runs-on: ubuntu-22.04-arm
+    # Nuevo 2026-07-26: AppImage aarch64 para la Retroid Pocket 6 (Snapdragon 8 Gen 2/Adreno) con
+    # ArmadaOS (Fedora atomico) - se corre en el rootfs inmutable sin tocar el sistema. No hay
+    # linuxdeployqt oficial ARM64 -> se usa linuxdeploy + linuxdeploy-plugin-qt (que si tienen aarch64).
+    if: needs.setup-version.outputs.should_build == 'true'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+
+    - name: Display version info
+      run: echo "Version ${{ needs.setup-version.outputs.version }} (aarch64)"
+
+    - name: Install ARM64 dependencies, Qt and AppImage tooling
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential wget file \
+          qt6-base-dev qt6-base-dev-tools qt6-declarative-dev qt6-declarative-dev-tools libqt6svg6-dev qt6-multimedia-dev \
+          libegl1-mesa-dev libgl1-mesa-dev libopus-dev libsdl2-dev libsdl2-ttf-dev \
+          libssl-dev libavcodec-dev libavformat-dev libavutil-dev libswscale-dev \
+          libva-dev libvdpau-dev libxkbcommon-dev libxkbcommon-x11-0 wayland-protocols libdrm-dev nasm libgbm-dev \
+          libfreetype6-dev libasound2-dev libdbus-1-dev libgles2-mesa-dev libglu1-mesa-dev \
+          libibus-1.0-dev libpulse-dev libudev-dev libx11-dev libxcursor-dev libxext-dev \
+          libxi-dev libxinerama-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev \
+          libxcb-dri3-dev libx11-xcb-dev libplacebo-dev \
+          libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-shape0 libxcb-xkb1 libxcb-util1 \
+          libfuse2 fuse
+
+    - name: Clean any existing build
+      run: |
+        rm -f .qmake.stash .qmake.cache
+        find . -name "Makefile*" -delete || true
+
+    - name: Build (native aarch64)
+      run: |
+        qmake6 artemis.pro CONFIG+=release "QMAKE_CXXFLAGS+=-fPIC"
+        make -j$(nproc)
+        echo "=== binario ==="
+        file app/selene
+        readelf -h app/selene | grep Machine || true
+
+    - name: Build AppImage (aarch64 via linuxdeploy + qt plugin)
+      env:
+        VERSION: ${{ needs.setup-version.outputs.version }}
+      run: |
+        export APPIMAGE_EXTRACT_AND_RUN=1
+        APPDIR="$PWD/AppDir"
+        mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/share/applications" "$APPDIR/usr/share/icons/hicolor/scalable/apps"
+        cp app/selene "$APPDIR/usr/bin/"
+        if [ -f app/res/artemis.svg ]; then
+          cp app/res/artemis.svg "$APPDIR/usr/share/icons/hicolor/scalable/apps/artemis.svg"
+        fi
+        cat > "$APPDIR/usr/share/applications/selene.desktop" << 'EOF'
+        [Desktop Entry]
+        Type=Application
+        Name=Selene
+        Comment=Game streaming client
+        Exec=selene
+        Icon=artemis
+        Categories=Game;Network;
+        EOF
+
+        # Herramientas aarch64 (no existe linuxdeployqt ARM64 oficial)
+        wget -q -O linuxdeploy "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-aarch64.AppImage"
+        wget -q -O linuxdeploy-plugin-qt "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-aarch64.AppImage"
+        chmod +x linuxdeploy linuxdeploy-plugin-qt
+        export PATH="$PWD:$PATH"
+        export QMAKE="$(command -v qmake6)"
+        export EXTRA_QT_PLUGINS="svg"
+        export OUTPUT="Selene-${VERSION}-aarch64.AppImage"
+
+        ./linuxdeploy --appdir "$APPDIR" \
+          --desktop-file "$APPDIR/usr/share/applications/selene.desktop" \
+          --icon-file "$APPDIR/usr/share/icons/hicolor/scalable/apps/artemis.svg" \
+          --plugin qt --output appimage
+
+        echo "=== AppImages producidos ==="
+        ls -la *.AppImage
+        file "$OUTPUT"
+
+    - name: Upload ARM64 AppImage
+      uses: actions/upload-artifact@v4
+      with:
+        name: selene-appimage-arm64-${{ needs.setup-version.outputs.version }}
+        path: Selene-${{ needs.setup-version.outputs.version }}-aarch64.AppImage
+        retention-days: 30
+        if-no-files-found: warn
+
 
   create-dev-release:
     name: Create Development Release
-    needs: [setup-version, build-windows-x64-portable, build-windows-arm64-portable, build-windows-universal-installer, build-macos-dev, build-linux-dev, build-flatpak-dev, build-raspberry-pi-dev]
+    needs: [setup-version, build-windows-x64-portable, build-windows-arm64-portable, build-windows-universal-installer, build-macos-dev, build-linux-dev, build-appimage-dev, build-flatpak-dev, build-raspberry-pi-dev, build-appimage-arm64-dev]
     runs-on: ubuntu-latest
     if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && needs.setup-version.outputs.should_build == 'true'  # Create releases for develop/main branches when builds ran
     
