@@ -1468,57 +1468,31 @@ jobs:
         MimeType=x-scheme-handler/artemis;
         EOF
         
-        # Build an AppDir with linuxdeployqt, then package with our own AppRun (fixes path issues on Steam Deck)
+        # Empaquetado con linuxdeployqt en UN shot: -qmldir (app QML, imprescindible o el AppImage no
+        # trae los modulos QML) + -appimage. Es la receta que verifique localmente el 2026-07-26
+        # (produce un AppImage que ARRANCA en el Steam Deck). Se descartan el appimagetool + AppRun
+        # custom de antes (fragiles y con refs stale a 'artemis' pre-rebrand): -appimage ya empaqueta.
         export PATH=$HOME/bin:$PATH
-        cd build/build-release
-        
-        echo "=== Environment Check ==="
-        echo "PWD: $(pwd)"
-        echo "PATH: $PATH"
+        export APPIMAGE_EXTRACT_AND_RUN=1
         which linuxdeployqt && linuxdeployqt --version || echo "linuxdeployqt not found"
-        which appimagetool && appimagetool --version || echo "appimagetool not found"
-        
-        # Selene no usa QtSql; Qt 6.8 trae drivers SQL fantasma (mimer/mysql/psql/odbc) cuyas libs
-        # runtime NO están -> linuxdeployqt aborta ("libmimerapi.so / libmysqlclient.so.21 => not found").
-        # Borra todos menos sqlite (aprendido en el build local 2026-07-26).
+
+        # Selene no usa QtSql; Qt 6.8 trae drivers SQL fantasma (mimer/mysql/psql/odbc) sin lib runtime
+        # -> linuxdeployqt aborta ("libmimerapi.so / libmysqlclient.so.21 => not found"). Borra todos
+        # menos sqlite (aprendido en el build local 2026-07-26).
         find "$Qt6_DIR/plugins/sqldrivers" -name 'libqsql*.so' ! -name 'libqsqlite.so' -delete 2>/dev/null || true
 
-        echo "=== Preparing AppDir with linuxdeployqt ==="
-        linuxdeployqt usr/share/applications/artemis.desktop -unsupported-allow-new-glibc -verbose=2 2>&1 | tee linuxdeployqt.log
-        
-        if [ ! -d "usr" ] || [ ! -f "usr/bin/artemis" ]; then
-          echo "ERROR: AppDir not prepared correctly"
+        cd build/build-release
+        echo "=== linuxdeployqt (-qmldir + -appimage) ==="
+        linuxdeployqt usr/share/applications/artemis.desktop \
+          -qmldir="$GITHUB_WORKSPACE/app/gui" -unsupported-allow-new-glibc -appimage -verbose=1
+
+        mkdir -p ../installer-release
+        find . -maxdepth 1 -iname '*.AppImage' -exec mv -f {} ../installer-release/ \;
+        if ! ls ../installer-release/*.AppImage >/dev/null 2>&1; then
+          echo "ERROR: no se produjo ningún AppImage"
           exit 1
         fi
-        
-        echo "=== Inject custom AppRun ==="
-        cat > AppRun << 'APPRUN_EOF'
-        #!/bin/bash
-        HERE="$(dirname "$(readlink -f "${0}")")"
-        export LD_LIBRARY_PATH="${HERE}/usr/lib:${HERE}/lib:${LD_LIBRARY_PATH}"
-        export QT_PLUGIN_PATH="${HERE}/usr/lib/qt6/plugins:${QT_PLUGIN_PATH}"
-        exec "${HERE}/usr/bin/artemis" "$@"
-        APPRUN_EOF
-        chmod +x AppRun
-        
-        # Ensure a desktop file is at the AppDir root for appimagetool
-        cp -f usr/share/applications/artemis.desktop . || true
-        
-        # Ensure an application icon is available at AppDir root for appimagetool
-        if [ -f "usr/share/icons/hicolor/256x256/apps/artemis.png" ]; then
-          cp -f usr/share/icons/hicolor/256x256/apps/artemis.png ./artemis.png
-        elif [ -f "usr/share/icons/hicolor/scalable/apps/artemis.svg" ]; then
-          cp -f usr/share/icons/hicolor/scalable/apps/artemis.svg ./artemis.svg
-        fi
-        
-        echo "=== Creating AppImage with appimagetool ==="
-        ARCH=x86_64 appimagetool . "../installer-release/Artemis-${{ needs.setup-version.outputs.version }}-x86_64.AppImage" 2>&1 | tee appimagetool.log
-        
-        if [ ! -f "../installer-release/Artemis-${{ needs.setup-version.outputs.version }}-x86_64.AppImage" ]; then
-          echo "ERROR: appimagetool failed"
-          tail -50 appimagetool.log || true
-          exit 1
-        fi
+        ls -lh ../installer-release/*.AppImage
     
     - name: Verify AppImage was created successfully
       run: |
@@ -1546,9 +1520,10 @@ jobs:
     - name: Upload AppImage
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-appimage-${{ needs.setup-version.outputs.version }}
-        path: build/installer-release/Artemis-${{ needs.setup-version.outputs.version }}-x86_64.AppImage
+        name: selene-appimage-x86_64-${{ needs.setup-version.outputs.version }}
+        path: build/installer-release/*.AppImage
         retention-days: 30
+        if-no-files-found: error
 
   build-flatpak-dev:
     name: Flatpak Development Build
