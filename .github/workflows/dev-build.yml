@@ -1413,86 +1413,27 @@ jobs:
         
         echo "$HOME/bin" >> $GITHUB_PATH
     
-    - name: Build Artemis with Qt 6 for AppImage
+    - name: Build AppImage (scripts/build-appimage.sh)
       run: |
-        # Set Qt 6 environment (variables are set from jurplel/install-qt-action)
-        export PATH="$Qt6_DIR/bin:$PATH"
-        export QMAKE="$Qt6_DIR/bin/qmake6"
-        
-        # Verify Qt installation
-        which qmake6 || echo "qmake6 not found in PATH"
-        echo "Qt6_DIR: $Qt6_DIR"
-        ls -la "$Qt6_DIR/bin/" || echo "Qt6 bin directory not found"
-        
-        # Clean any existing build
-        rm -rf build/
-        rm -f .qmake.stash .qmake.cache
-        find . -name "Makefile*" -delete || true
-        
-        # Build with Qt 6 (similar to Artemis but without Moonlight-specific dependencies)
-        git -c submodule.libs.update=none submodule update --init --recursive
-        
-        # Build the project using Qt 6
-        qmake6 artemis.pro CONFIG+=release "QMAKE_CXXFLAGS+=-fPIC"
-        make -j$(nproc)
-        
-        # Create AppImage directory structure
-        mkdir -p build/installer-release
-        mkdir -p build/build-release/usr/bin
-        mkdir -p build/build-release/usr/share/applications
-        mkdir -p build/build-release/usr/share/icons/hicolor/256x256/apps
-        mkdir -p build/build-release/usr/share/icons/hicolor/scalable/apps
-        
-        # Copy the binary
-        cp app/selene build/build-release/usr/bin/
-        
-        # Copy existing Artemis icons
-        if [ -f "app/artemis.png" ]; then
-          cp app/artemis.png build/build-release/usr/share/icons/hicolor/256x256/apps/artemis.png
-        fi
-        if [ -f "app/res/artemis.svg" ]; then
-          cp app/res/artemis.svg build/build-release/usr/share/icons/hicolor/scalable/apps/artemis.svg
-        fi
-        
-        # Create a desktop file
-        cat > build/build-release/usr/share/applications/artemis.desktop << 'EOF'
-        [Desktop Entry]
-        Type=Application
-        Name=Selene
-        Comment=Game streaming client for NVIDIA GameStream and Sunshine
-        Exec=selene
-        Icon=artemis
-        Categories=Game;Network;
-        Keywords=gaming;streaming;nvidia;gamestream;sunshine;
-        StartupNotify=true
-        MimeType=x-scheme-handler/artemis;
-        EOF
-        
-        # Empaquetado con linuxdeployqt en UN shot: -qmldir (app QML, imprescindible o el AppImage no
-        # trae los modulos QML) + -appimage. Es la receta que verifique localmente el 2026-07-26
-        # (produce un AppImage que ARRANCA en el Steam Deck). Se descartan el appimagetool + AppRun
-        # custom de antes (fragiles y con refs stale a 'artemis' pre-rebrand): -appimage ya empaqueta.
-        export PATH=$HOME/bin:$PATH
+        # Usa el script del repo (upstream moonlight-qt), VERIFICADO localmente 2026-07-26: hace
+        # make install a un layout FHS que linuxdeployqt acepta + linuxdeployqt -qmldir -appimage en
+        # un shot. Antes el job armaba el AppDir A MANO (mkdir/cp) y eso atragantaba a linuxdeployqt
+        # build 107 (moria tras "Found icons" -> "AppDir not prepared correctly"). El script deshabilita
+        # Wayland a proposito (evita romper EGL en el Deck; se usa el EGL del host) = config de AppImage
+        # bendecida por upstream. Las libs desde fuente (SDL2/dav1d/libplacebo/FFmpeg en /usr/local) las
+        # linkea el qmake del script.
+        export PATH="$Qt6_DIR/bin:$HOME/bin:$PATH"
         export APPIMAGE_EXTRACT_AND_RUN=1
-        which linuxdeployqt && linuxdeployqt --version || echo "linuxdeployqt not found"
 
         # Selene no usa QtSql; Qt 6.8 trae drivers SQL fantasma (mimer/mysql/psql/odbc) sin lib runtime
         # -> linuxdeployqt aborta ("libmimerapi.so / libmysqlclient.so.21 => not found"). Borra todos
         # menos sqlite (aprendido en el build local 2026-07-26).
         find "$Qt6_DIR/plugins/sqldrivers" -name 'libqsql*.so' ! -name 'libqsqlite.so' -delete 2>/dev/null || true
 
-        cd build/build-release
-        echo "=== linuxdeployqt (-qmldir + -appimage) ==="
-        linuxdeployqt usr/share/applications/artemis.desktop \
-          -qmldir="$GITHUB_WORKSPACE/app/gui" -unsupported-allow-new-glibc -appimage -verbose=1
+        bash scripts/build-appimage.sh
 
-        mkdir -p ../installer-release
-        find . -maxdepth 1 -iname '*.AppImage' -exec mv -f {} ../installer-release/ \;
-        if ! ls ../installer-release/*.AppImage >/dev/null 2>&1; then
-          echo "ERROR: no se produjo ningún AppImage"
-          exit 1
-        fi
-        ls -lh ../installer-release/*.AppImage
+        echo "=== AppImage(s) producidos ==="
+        find build -maxdepth 2 -iname '*.AppImage' -exec ls -lh {} \;
     
     - name: Verify AppImage was created successfully
       run: |
