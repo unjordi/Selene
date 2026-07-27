@@ -424,7 +424,7 @@ jobs:
         
         if ($zipFile) {
           # Rename portable ZIP for Artemis using semantic version
-          $newZipName = "artemis-windows-x64-portable-$env:SEMANTIC_VERSION.zip"
+          $newZipName = "selene-windows-x64-portable-$env:SEMANTIC_VERSION.zip"
           Move-Item $zipFile.FullName $newZipName
           echo "Created x64 portable ZIP: $newZipName"
         } else {
@@ -436,8 +436,8 @@ jobs:
     - name: Upload x64 Portable ZIP
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-windows-x64-portable-${{ needs.setup-version.outputs.version }}
-        path: artemis-windows-x64-portable-${{ needs.setup-version.outputs.version }}.zip
+        name: selene-windows-x64-portable-${{ needs.setup-version.outputs.version }}
+        path: selene-windows-x64-portable-${{ needs.setup-version.outputs.version }}.zip
         retention-days: 30
         if-no-files-found: warn
 
@@ -571,7 +571,7 @@ jobs:
         
         if ($zipFile) {
           # Rename portable ZIP for Artemis ARM64 using semantic version
-          $newZipName = "artemis-windows-arm64-portable-$env:SEMANTIC_VERSION.zip"
+          $newZipName = "selene-windows-arm64-portable-$env:SEMANTIC_VERSION.zip"
           Move-Item $zipFile.FullName $newZipName
           echo "Created ARM64 portable ZIP: $newZipName"
         } else {
@@ -583,8 +583,8 @@ jobs:
     - name: Upload ARM64 Portable ZIP
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-windows-arm64-portable-${{ needs.setup-version.outputs.version }}
-        path: artemis-windows-arm64-portable-${{ needs.setup-version.outputs.version }}.zip
+        name: selene-windows-arm64-portable-${{ needs.setup-version.outputs.version }}
+        path: selene-windows-arm64-portable-${{ needs.setup-version.outputs.version }}.zip
         retention-days: 30
         if-no-files-found: warn
 
@@ -771,7 +771,7 @@ jobs:
         
         if ($bundleFile) {
           # Rename universal bundle
-          $newBundleName = "artemis-windows-universal-installer-$env:SEMANTIC_VERSION.exe"
+          $newBundleName = "selene-windows-universal-installer-$env:SEMANTIC_VERSION.exe"
           Move-Item $bundleFile.FullName $newBundleName
           echo "Created universal installer: $newBundleName"
         } else {
@@ -783,8 +783,8 @@ jobs:
     - name: Upload Universal Installer
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-windows-universal-installer-${{ needs.setup-version.outputs.version }}
-        path: artemis-windows-universal-installer-${{ needs.setup-version.outputs.version }}.exe
+        name: selene-windows-universal-installer-${{ needs.setup-version.outputs.version }}
+        path: selene-windows-universal-installer-${{ needs.setup-version.outputs.version }}.exe
         retention-days: 30
         if-no-files-found: warn
 
@@ -919,7 +919,7 @@ jobs:
         echo "$VERSION" > app/version.txt
         
         # Run DMG generation with error handling
-        DMG_OUTPUT="Artemis-${VERSION}.dmg"
+        DMG_OUTPUT="Selene-${VERSION}.dmg"
         if ! ./scripts/generate-dmg.sh Release "$VERSION"; then
           echo "DMG generation failed, checking for common issues..."
           
@@ -940,13 +940,13 @@ jobs:
             # Simple approach using hdiutil which is more reliable
             if [ -d "app/Selene.app" ]; then
               echo "Creating DMG with hdiutil..."
-              hdiutil create -srcfolder app/Selene.app -volname "Artemis" "build/installer-Release/Artemis-${VERSION}.dmg" || {
+              hdiutil create -srcfolder app/Selene.app -volname "Selene" "build/installer-Release/Selene-${VERSION}.dmg" || {
                 echo "hdiutil failed, trying create-dmg with minimal options..."
                 create-dmg \
-                  --volname "Artemis" \
+                  --volname "Selene" \
                   --no-internet-enable \
                   --app-drop-link 350 185 \
-                  "build/installer-Release/Artemis-${VERSION}.dmg" \
+                  "build/installer-Release/Selene-${VERSION}.dmg" \
                   "app/" || exit 1
               }
             else
@@ -959,24 +959,24 @@ jobs:
               echo "Found Selene.app at app/Selene.app"
               # Create a simple DMG manually with proper filename
               mkdir -p ../installer-Release
-              create-dmg --volname "Artemis-$VERSION" \
+              create-dmg --volname "Selene-$VERSION" \
                 --icon-size 80 \
                 --icon "app/Selene.app" 200 190 \
                 --hide-extension "app/Selene.app" \
                 --app-drop-link 400 185 \
-                "../installer-Release/Artemis-$VERSION.dmg" \
+                "../installer-Release/Selene-$VERSION.dmg" \
                 "app/Selene.app"
               cd ../..
             elif [ -d "Selene.app" ]; then
               echo "Found Selene.app at root level"
               # Create a simple DMG manually with proper filename
               mkdir -p ../installer-Release
-              create-dmg --volname "Artemis-$VERSION" \
+              create-dmg --volname "Selene-$VERSION" \
                 --icon-size 80 \
                 --icon "Selene.app" 200 190 \
                 --hide-extension "Selene.app" \
                 --app-drop-link 400 185 \
-                "../installer-Release/Artemis-$VERSION.dmg" \
+                "../installer-Release/Selene-$VERSION.dmg" \
                 "Selene.app"
               cd ../..
             else
@@ -994,8 +994,8 @@ jobs:
     - name: Upload macOS Universal DMG
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-macos-universal-${{ needs.setup-version.outputs.version }}
-        path: build/installer-Release/Artemis-${{ needs.setup-version.outputs.version }}.dmg
+        name: selene-macos-universal-${{ needs.setup-version.outputs.version }}
+        path: build/installer-Release/Selene-${{ needs.setup-version.outputs.version }}.dmg
         retention-days: 30
 
   build-linux-dev:
@@ -1235,12 +1235,12 @@ jobs:
         EOF
         
         # Package with semantic version
-        tar -czf artemis-linux-$VERSION.tar.gz -C linux-package .
+        tar -czf selene-linux-$VERSION.tar.gz -C linux-package .
     - name: Upload Development Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-linux-${{ needs.setup-version.outputs.version }}
-        path: artemis-linux-${{ needs.setup-version.outputs.version }}.tar.gz
+        name: selene-linux-${{ needs.setup-version.outputs.version }}
+        path: selene-linux-${{ needs.setup-version.outputs.version }}.tar.gz
         retention-days: 30
 
   build-appimage-dev:
@@ -1681,13 +1681,13 @@ jobs:
         VERSION: ${{ needs.setup-version.outputs.version }}
       run: |
         flatpak-builder --force-clean --repo=repo build-dir com.artemisdesktop.ArtemisDesktopDev.yml
-        flatpak build-bundle repo artemis-flatpak-$VERSION.flatpak com.artemisdesktop.ArtemisDesktopDev
+        flatpak build-bundle repo selene-flatpak-$VERSION.flatpak com.artemisdesktop.ArtemisDesktopDev
     
     - name: Upload Flatpak Development Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-flatpak-${{ needs.setup-version.outputs.version }}
-        path: artemis-flatpak-${{ needs.setup-version.outputs.version }}.flatpak
+        name: selene-flatpak-${{ needs.setup-version.outputs.version }}
+        path: selene-flatpak-${{ needs.setup-version.outputs.version }}.flatpak
         retention-days: 30
 
   build-raspberry-pi-dev:
@@ -1794,14 +1794,14 @@ jobs:
 
         # Create the zip file
         cd artemis-package
-        zip -r "../artemis-raspberry-pi-arm64-$SEMANTIC_VERSION.zip" .
+        zip -r "../selene-raspberry-pi-arm64-$SEMANTIC_VERSION.zip" .
         cd ..
 
     - name: Upload Raspberry Pi Development Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: artemis-raspberry-pi-arm64-${{ needs.setup-version.outputs.version }}
-        path: artemis-raspberry-pi-arm64-${{ needs.setup-version.outputs.version }}.zip
+        name: selene-raspberry-pi-arm64-${{ needs.setup-version.outputs.version }}
+        path: selene-raspberry-pi-arm64-${{ needs.setup-version.outputs.version }}.zip
         retention-days: 30
 
   build-appimage-arm64-dev:
