@@ -76,7 +76,14 @@ ClipboardManager* ClipboardManager::create(QQmlEngine *qmlEngine, QJSEngine *jsE
 {
     Q_UNUSED(qmlEngine)
     Q_UNUSED(jsEngine)
-    return instance();
+
+    ClipboardManager* inst = instance();
+    // Explicitly tell the QML engine that C++ retains ownership.
+    // This prevents QML from deleting the singleton instance when the engine shuts down
+    // or if a QML component tries to take ownership, avoiding double-free crashes.
+    QQmlEngine::setObjectOwnership(inst, QQmlEngine::CppOwnership);
+
+    return inst;
 }
 
 void ClipboardManager::setConnection(NvComputer *computer, NvHTTP *http)

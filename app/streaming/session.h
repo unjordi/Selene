@@ -120,10 +120,6 @@ public:
             delete m_ServerCommandManager;
             m_ServerCommandManager = nullptr;
         }
-        if (m_ClipboardManager) {
-            delete m_ClipboardManager;
-            m_ClipboardManager = nullptr;
-        }
     };
 
     Q_INVOKABLE void exec(QWindow* qtWindow);
